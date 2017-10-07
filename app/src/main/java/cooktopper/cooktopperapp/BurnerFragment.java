@@ -9,6 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cooktopper.cooktopperapp.models.Burner;
+import cooktopper.cooktopperapp.models.BurnerState;
+import cooktopper.cooktopperapp.models.Stove;
+import cooktopper.cooktopperapp.models.Temperature;
+
 public class BurnerFragment extends Fragment{
 
     private RecyclerView recyclerView;
@@ -34,8 +42,17 @@ public class BurnerFragment extends Fragment{
         recyclerView.setLayoutManager(layoutManager);
 
         // specify an adapter (see also next example)
-        String[] data = {"andre", "izabela"};
-        adapter = new BurnerListAdapter(data);
+        Stove stove = new Stove(1, "abc");
+        Temperature temperature = new Temperature(1, "Baixa");
+        BurnerState burnerStateOn = new BurnerState(1, "Ligada");
+        BurnerState burnerStateOff = new BurnerState(0, "Desligada");
+        Burner burner1 = new Burner(1, "Boca Pequena", stove, temperature, burnerStateOn);
+        Burner burner2 = new Burner(2, "Boca Grande", stove, temperature, burnerStateOff);
+        List<Burner> burners = new ArrayList<>();
+        burners.add(burner1);
+        burners.add(burner2);
+
+        adapter = new BurnerListAdapter(burners, getContext());
         recyclerView.setAdapter(adapter);
 
 

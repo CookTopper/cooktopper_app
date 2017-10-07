@@ -14,9 +14,65 @@
         android:layout_margin="10dp"
         card_view:cardCornerRadius="4dp">
 
-        <TextView
-            android:id="@+id/info_text"
+        <FrameLayout
+            android:layout_gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:elevation="4dp"
+            android:padding="5dp">
+
+            <LinearLayout
+                android:weightSum="10"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/burner_image"
+                    android:layout_gravity="center"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"
+                    android:layout_centerHorizontal="true"
+                    android:elevation="5dp"
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/fire_on" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_weight="7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:id="@+id/burner_description"
+                        android:singleLine="true"
+                        style="@style/TextAppearance.AppCompat.Headline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/temperature"
+                        android:singleLine="true"
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/time"
+                        android:singleLine="true"
+                        android:layout_margin="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

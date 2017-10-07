@@ -7,8 +7,8 @@ public class ViewHolder extends RecyclerView.ViewHolder {
 
     public View view;
 
-    public ViewHolder(View v){
-        super(v);
-        view = v;
+    public ViewHolder(View viewToBeSet){
+        super(viewToBeSet);
+        view = viewToBeSet;
     }
 }

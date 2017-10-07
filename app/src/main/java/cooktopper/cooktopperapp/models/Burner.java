@@ -3,12 +3,12 @@ package cooktopper.cooktopperapp.models;
 public class Burner {
 
     private int id;
-    private int description;
+    private String description;
     private Stove stove;
     private Temperature temperature;
     private BurnerState burnerState;
 
-    public Burner(int id, int description, Stove stove, Temperature temperature, BurnerState burnerState) {
+    public Burner(int id, String description, Stove stove, Temperature temperature, BurnerState burnerState) {
         setId(id);
         setDescription(description);
         setStove(stove);
@@ -24,11 +24,11 @@ public class Burner {
         this.id = id;
     }
 
-    public int getDescription(){
+    public String getDescription(){
         return description;
     }
 
-    public void setDescription(int description){
+    public void setDescription(String description){
         this.description = description;
     }
 
