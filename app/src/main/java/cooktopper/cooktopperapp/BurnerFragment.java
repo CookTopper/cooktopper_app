@@ -2,6 +2,7 @@ package cooktopper.cooktopperapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,7 +18,7 @@ import cooktopper.cooktopperapp.models.BurnerState;
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.models.Temperature;
 
-public class BurnerFragment extends Fragment{
+public class BurnerFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
@@ -54,7 +55,6 @@ public class BurnerFragment extends Fragment{
 
         adapter = new BurnerListAdapter(burners, getContext());
         recyclerView.setAdapter(adapter);
-
 
         return view;
     }

@@ -1,7 +1,11 @@
 package cooktopper.cooktopperapp;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.Image;
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +17,38 @@ import java.util.List;
 
 import cooktopper.cooktopperapp.models.Burner;
 
-public class BurnerListAdapter extends RecyclerView.Adapter<ViewHolder>{
+public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.ViewHolder>{
 
     private List<Burner> dataset;
     private Context context;
 
-    public BurnerListAdapter(List<Burner> datasetToBeSet, Context contextToBeSet){
-        dataset = datasetToBeSet;
-        context = contextToBeSet;
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+        public View view;
+
+        public ViewHolder(View viewToBeSet){
+            super(viewToBeSet);
+            view = viewToBeSet;
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            Intent intent = new Intent(context, OptionsActivity.class);
+            intent.putExtra("id", dataset.get(this.getAdapterPosition()).getId());
+            intent.putExtra("description", dataset.get(this.getAdapterPosition()).getDescription());
+            intent.putExtra("temperature", dataset.get(this.getAdapterPosition()).getTemperature()
+                    .getDescription());
+            intent.putExtra("state", dataset.get(this.getAdapterPosition()).getBurnerState()
+                    .getId());
+            context.startActivity(intent);
+        }
+    }
+
+    public BurnerListAdapter(List<Burner> dataset, Context context){
+       this. dataset = dataset;
+       this.context = context;
     }
 
     @Override
@@ -66,7 +94,6 @@ public class BurnerListAdapter extends RecyclerView.Adapter<ViewHolder>{
             TextView burner_temperature = holder.view.findViewById(R.id.temperature);
             burner_temperature.setText("Desligada");
         }
-
     }
 
     @Override
