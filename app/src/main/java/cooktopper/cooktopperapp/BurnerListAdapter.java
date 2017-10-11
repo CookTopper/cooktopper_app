@@ -13,9 +13,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import java.util.List;
 
 import cooktopper.cooktopperapp.models.Burner;
+import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 
 public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.ViewHolder>{
 
@@ -34,14 +37,10 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
 
         @Override
         public void onClick(View v) {
-
+            BurnerPresenter burnerPresenter = new BurnerPresenter(context.getApplicationContext());
+            String burnerAsJson = burnerPresenter.getBurnerAsJson(dataset.get(this.getAdapterPosition()));
             Intent intent = new Intent(context, OptionsActivity.class);
-            intent.putExtra("id", dataset.get(this.getAdapterPosition()).getId());
-            intent.putExtra("description", dataset.get(this.getAdapterPosition()).getDescription());
-            intent.putExtra("temperature", dataset.get(this.getAdapterPosition()).getTemperature()
-                    .getDescription());
-            intent.putExtra("state", dataset.get(this.getAdapterPosition()).getBurnerState()
-                    .getId());
+            intent.putExtra("burner_json", burnerAsJson);
             context.startActivity(intent);
         }
     }

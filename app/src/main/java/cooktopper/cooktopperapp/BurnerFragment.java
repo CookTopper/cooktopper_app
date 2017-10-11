@@ -17,6 +17,7 @@ import cooktopper.cooktopperapp.models.Burner;
 import cooktopper.cooktopperapp.models.BurnerState;
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.models.Temperature;
+import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 
 public class BurnerFragment extends Fragment {
 
@@ -32,7 +33,7 @@ public class BurnerFragment extends Fragment {
                              Bundle savedInstanceState){
         View view = inflater.inflate(R.layout.fragment_burner, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerView = view.findViewById(R.id.recycler_view);
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
@@ -42,16 +43,8 @@ public class BurnerFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
-        Stove stove = new Stove(1, "abc");
-        Temperature temperature = new Temperature(1, "Baixa");
-        BurnerState burnerStateOn = new BurnerState(1, "Ligada");
-        BurnerState burnerStateOff = new BurnerState(0, "Desligada");
-        Burner burner1 = new Burner(1, "Boca Pequena", stove, temperature, burnerStateOn);
-        Burner burner2 = new Burner(2, "Boca Grande", stove, temperature, burnerStateOff);
-        List<Burner> burners = new ArrayList<>();
-        burners.add(burner1);
-        burners.add(burner2);
+        BurnerPresenter burnerPresenter = new BurnerPresenter(getContext());
+        List<Burner> burners = burnerPresenter.getBurners();
 
         adapter = new BurnerListAdapter(burners, getContext());
         recyclerView.setAdapter(adapter);
