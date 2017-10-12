@@ -2,28 +2,32 @@ package cooktopper.cooktopperapp.requests;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class GetRequest {
 
     private Context context;
-    JSONObject result;
+    JSONArray result;
 
     public GetRequest(Context context) {
         this.context = context;
     }
 
-    public JSONObject request(String url){
-        JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>(){
+    public JSONArray request(String url){
+        JsonArrayRequest getRequest = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>(){
                     @Override
-                    public void onResponse(JSONObject response){
+                    public void onResponse(JSONArray response){
+                        Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
                         Log.d("Response", response.toString());
                         result = response;
 

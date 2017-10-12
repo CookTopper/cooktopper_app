@@ -47,10 +47,10 @@ public class BurnerPresenter {
 
     public  List<Burner> getBurners() {
         GetRequest getRequest = new GetRequest(context);
-        JSONObject jsonObject = getRequest.request("http://10.0.2.2:8000/burner/");
+        JSONArray jsonArray = getRequest.request("http://10.0.2.2:8000/burner/");
         List<Burner> burners = new ArrayList<>();
 
-        try{
+        /*try{
             JSONArray jsonArray = new JSONArray(jsonObject);
             for(int i=0; i<jsonArray.length(); i++) {
                 JSONObject currentJson = jsonArray.getJSONObject(i);
@@ -74,7 +74,7 @@ public class BurnerPresenter {
 
         } catch(JSONException e){
             e.printStackTrace();
-        }
+        }*/
 
         return burners;
     }
