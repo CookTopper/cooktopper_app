@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
+
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.requests.GetRequest;
 
@@ -18,21 +20,34 @@ public class StovePresenter {
     }
 
     public Stove getStoveById(String id) {
-        /*GetRequest getRequest = new GetRequest(context);
-        JSONArray jsonArray = getRequest.request("http://10.0.2.2:8000/stove/?id=" + id);
-        JSONObject jsonObject = null;
+        GetRequest getRequest = new GetRequest();
+        String response = "";
         try{
-            jsonObject = jsonArray.getJSONObject(0);
-        } catch(JSONException e){
+            response =  getRequest.execute("http://127.0.0.1:8000/stove/?id=" + id).get()
+                    .toString();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        } catch(ExecutionException e){
             e.printStackTrace();
         }
+
+        Stove stove = getStoveFromJsonString(response);
+
+        return stove;
+    }
+
+    public Stove getStoveFromJsonString(String jsonString){
+        JSONArray responseAsJson = null;
         Stove stove = null;
+
         try{
-            stove = new Stove(jsonObject.getInt("id"), jsonObject.getString("token"));
+            responseAsJson = new JSONArray(jsonString);
+            stove = new Stove(responseAsJson.getJSONObject(0).getInt("id"),
+                    responseAsJson.getJSONObject(0).getString("token"));
         } catch(JSONException e){
             e.printStackTrace();
         }
-*/
-        return new Stove(1,"");
+
+        return stove;
     }
 }

@@ -6,6 +6,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.concurrent.ExecutionException;
+
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.requests.GetRequest;
@@ -18,23 +20,35 @@ public class TemperaturePresenter {
         this.context = context;
     }
 
-    public Temperature getTemperatureById(String id) {
-        /*GetRequest getRequest = new GetRequest(context);
-        JSONArray jsonArray = getRequest.request("http://10.0.2.2:8000/temperature/?id=" + id);
-        JSONObject jsonObject = null;
+    public Temperature getTemperatureFromJsonString(String jsonString){
+        JSONArray responseAsJson = null;
+        Temperature temperature = null;
+
         try{
-            jsonObject = jsonArray.getJSONObject(0);
+            responseAsJson = new JSONArray(jsonString);
+            temperature = new Temperature(responseAsJson.getJSONObject(0).getInt("id"),
+                    responseAsJson.getJSONObject(0).getString("description"));
         } catch(JSONException e){
             e.printStackTrace();
         }
-        Temperature temperature = null;
-        try{
-            temperature = new Temperature(jsonObject.getInt("id"), jsonObject.getString("description"));
-        } catch(JSONException e){
-            e.printStackTrace();
-        }*/
 
-        return new Temperature(1, "");
+        return temperature;
     }
 
+    public Temperature getTemperatureById(String id) {
+        GetRequest getRequest = new GetRequest();
+        String response = "";
+        try{
+            response =  getRequest.execute("http://10.0.2.2:8000/temperature/?id=" + id).get()
+                    .toString();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        } catch(ExecutionException e){
+            e.printStackTrace();
+        }
+
+        Temperature temperature = getTemperatureFromJsonString(response);
+
+        return temperature;
+    }
 }

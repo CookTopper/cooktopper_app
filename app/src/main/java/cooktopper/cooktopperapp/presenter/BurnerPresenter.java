@@ -14,9 +14,11 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RunnableFuture;
 
+import cooktopper.cooktopperapp.models.BurnerState;
+import cooktopper.cooktopperapp.models.Stove;
+import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.requests.GetRequest;
 import cooktopper.cooktopperapp.models.Burner;
-import cooktopper.cooktopperapp.requests.GetResponse;
 import cooktopper.cooktopperapp.requests.PutRequest;
 
 public class BurnerPresenter {
@@ -26,7 +28,6 @@ public class BurnerPresenter {
     public BurnerPresenter(Context context) {
         this.context = context;
     }
-
 
     public int updateBurner(Burner currentBurner){
         PutRequest putRequest = new PutRequest(context);
@@ -46,51 +47,55 @@ public class BurnerPresenter {
        return 1;
     }
 
-    public  List<Burner> getBurners() {
+    public List<Burner> getBurners() {
 
-        GetRequest getRequest = new GetRequest(context, "http://10.0.2.2:8000/burner/");
-        GetResponse response = new GetResponse(getRequest);
-        Thread thread = new Thread(response);
-        thread.start();
-  
-        /*try{
-            JSONArray jsonArray = new JSONArray(jsonObject);
-            for(int i=0; i<jsonArray.length(); i++) {
-                JSONObject currentJson = jsonArray.getJSONObject(i);
-                StovePresenter stovePresenter = new StovePresenter(context);
-                Stove stove = stovePresenter.getStoveById(String.valueOf(currentJson.getInt("stove")));
+        GetRequest getRequest = new GetRequest();
+        String response = "";
+        try{
+            response =  getRequest.execute("http://10.0.2.2:8000/burner/").get().toString();
+        } catch(InterruptedException e){
+            e.printStackTrace();
+        } catch(ExecutionException e){
+            e.printStackTrace();
+        }
 
-                TemperaturePresenter temperaturePresenter = new TemperaturePresenter(context);
+        List<Burner> burners = getBurnersFromJsonString(response);
+
+        return burners;
+    }
+
+    public List<Burner> getBurnersFromJsonString(String response) {
+        BurnerStatePresenter burnerStatePresenter = new BurnerStatePresenter(context);
+        StovePresenter stovePresenter = new StovePresenter(context);
+        TemperaturePresenter temperaturePresenter = new TemperaturePresenter(context);
+
+        JSONArray jsonArray = null;
+        List<Burner> burners = new ArrayList<>();
+        try{
+            jsonArray = new JSONArray(response);
+            for(int i=0; i<jsonArray.length(); i++){
+                int currentBurnerId = jsonArray.getJSONObject(i).getInt("id");
+                BurnerState burnerState = burnerStatePresenter.getBurnerStateById(
+                        String.valueOf(currentBurnerId));
+
+                Stove stove = stovePresenter.getStoveById(String.valueOf(currentBurnerId));
+
                 Temperature temperature = temperaturePresenter.getTemperatureById(String
-                        .valueOf(currentJson.getInt("temperature")));
+                        .valueOf(currentBurnerId));
 
-                BurnerStatePresenter burnerStatePresenter = new BurnerStatePresenter(context);
-                BurnerState burnerState = burnerStatePresenter.getBurnerStateById(String
-                        .valueOf(currentJson.getInt("burner_state")));
-
-                Burner burner = new Burner(currentJson.getInt("id"),
-                        currentJson.getString("description"),
-                        stove, temperature, burnerState);
+                Burner burner = new Burner(currentBurnerId,
+                        jsonArray.getJSONObject(i).getString("description"),
+                        stove,
+                        temperature,
+                        burnerState);
 
                 burners.add(burner);
             }
 
         } catch(JSONException e){
             e.printStackTrace();
-        }*/
+        }
 
-        return new ArrayList<>();
-    }
-
-    public Burner getBurnerFromJson(String json){
-        Gson gson = new Gson();
-        Burner burner = gson.fromJson(json, Burner.class);
-        return burner;
-    }
-
-    public String getBurnerAsJson(Burner burner){
-        Gson gson = new Gson();
-        String json = gson.toJson(burner);
-        return json;
+        return burners;
     }
 }
