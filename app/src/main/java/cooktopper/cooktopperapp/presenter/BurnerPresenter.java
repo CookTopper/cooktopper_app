@@ -30,7 +30,7 @@ public class BurnerPresenter {
     }
 
     public int updateBurner(Burner currentBurner){
-        PutRequest putRequest = new PutRequest(context);
+        PutRequest putRequest = new PutRequest();
         JSONObject jsonObject = new JSONObject();
         try{
             jsonObject.put("temperature", currentBurner.getTemperature().getId());
@@ -38,13 +38,13 @@ public class BurnerPresenter {
 
         }
         catch(JSONException jsonException){
-
+            Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
         String idAsString = String.valueOf(currentBurner.getId());
-        putRequest.request("http://10.0.2.2:8000/burner/" + idAsString + "/", jsonObject);
+        putRequest.execute("http://10.0.2.2:8000/burner/" + idAsString, jsonObject.toString());
 
-       return 1;
+       return putRequest.getResponse();
     }
 
     public List<Burner> getBurners() {
@@ -97,5 +97,17 @@ public class BurnerPresenter {
         }
 
         return burners;
+    }
+
+    public Burner getBurnerFromExtrasFormatJson(String json){
+        Gson gson = new Gson();
+        Burner burner = gson.fromJson(json, Burner.class);
+        return burner;
+    }
+
+    public String getBurnerAsExtrasFormatJson(Burner burner){
+        Gson gson = new Gson();
+        String json = gson.toJson(burner);
+        return json;
     }
 }

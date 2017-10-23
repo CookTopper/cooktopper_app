@@ -38,7 +38,8 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         @Override
         public void onClick(View v) {
             BurnerPresenter burnerPresenter = new BurnerPresenter(context.getApplicationContext());
-            String burnerAsJson = null;
+            String burnerAsJson = burnerPresenter.getBurnerAsExtrasFormatJson(dataset.get(
+                    this.getAdapterPosition()));
             Intent intent = new Intent(context, OptionsActivity.class);
             intent.putExtra("burner_json", burnerAsJson);
             context.startActivity(intent);

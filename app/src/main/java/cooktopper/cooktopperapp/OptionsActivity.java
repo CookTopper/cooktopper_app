@@ -57,7 +57,8 @@ public class OptionsActivity extends AppCompatActivity implements
 
     private void setCurrentBurner() {
         BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
-        this.currentBurner = null;
+        this.currentBurner = burnerPresenter.getBurnerFromExtrasFormatJson(getIntent().getExtras()
+                .getString("burner_json"));
     }
 
     private void setSwitchInitialState(Switch burnerState) {
