@@ -24,14 +24,14 @@ public class PutRequest {
                     @Override
                     public void onResponse(JSONObject response) {
                         // response
-                        Log.d("Response", response.toString());
+                        Log.d("GetResponse", response.toString());
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         // error
-                        Log.d("Error.Response", error.toString());
+                        Log.d("Error.GetResponse", error.toString());
                     }
                 }
         );

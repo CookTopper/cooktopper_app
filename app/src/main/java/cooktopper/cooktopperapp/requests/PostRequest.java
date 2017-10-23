@@ -25,7 +25,7 @@ public class PostRequest {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            Log.d("Response:%n %s", response.toString(4));
+                            Log.d("GetResponse:%n %s", response.toString(4));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

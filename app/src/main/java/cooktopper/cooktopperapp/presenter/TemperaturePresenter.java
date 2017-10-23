@@ -19,7 +19,7 @@ public class TemperaturePresenter {
     }
 
     public Temperature getTemperatureById(String id) {
-        GetRequest getRequest = new GetRequest(context);
+        /*GetRequest getRequest = new GetRequest(context);
         JSONArray jsonArray = getRequest.request("http://10.0.2.2:8000/temperature/?id=" + id);
         JSONObject jsonObject = null;
         try{
@@ -32,9 +32,9 @@ public class TemperaturePresenter {
             temperature = new Temperature(jsonObject.getInt("id"), jsonObject.getString("description"));
         } catch(JSONException e){
             e.printStackTrace();
-        }
+        }*/
 
-        return temperature;
+        return new Temperature(1, "");
     }
 
 }

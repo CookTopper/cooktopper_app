@@ -18,7 +18,7 @@ public class StovePresenter {
     }
 
     public Stove getStoveById(String id) {
-        GetRequest getRequest = new GetRequest(context);
+        /*GetRequest getRequest = new GetRequest(context);
         JSONArray jsonArray = getRequest.request("http://10.0.2.2:8000/stove/?id=" + id);
         JSONObject jsonObject = null;
         try{
@@ -32,7 +32,7 @@ public class StovePresenter {
         } catch(JSONException e){
             e.printStackTrace();
         }
-
-        return stove;
+*/
+        return new Stove(1,"");
     }
 }

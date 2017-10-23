@@ -19,7 +19,7 @@ public class BurnerStatePresenter {
     }
 
     public BurnerState getBurnerStateById(String id) {
-        GetRequest getRequest = new GetRequest(context);
+        /*GetRequest getRequest = new GetRequest(context);
         JSONArray jsonArray = getRequest.request("http://10.0.2.2:8000/burner_state/?id=" + id);
         JSONObject jsonObject = null;
         try{
@@ -32,9 +32,9 @@ public class BurnerStatePresenter {
             burnerState = new BurnerState(jsonObject.getInt("id"), jsonObject.getString("description"));
         } catch(JSONException e){
             e.printStackTrace();
-        }
+        }*/
 
-        return burnerState;
+        return new BurnerState(1,"");
     }
 
 }

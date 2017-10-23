@@ -1,6 +1,7 @@
 package cooktopper.cooktopperapp.presenter;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.gson.Gson;
 
@@ -10,12 +11,12 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.RunnableFuture;
 
-import cooktopper.cooktopperapp.models.BurnerState;
-import cooktopper.cooktopperapp.models.Stove;
-import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.requests.GetRequest;
 import cooktopper.cooktopperapp.models.Burner;
+import cooktopper.cooktopperapp.requests.GetResponse;
 import cooktopper.cooktopperapp.requests.PutRequest;
 
 public class BurnerPresenter {
@@ -46,10 +47,12 @@ public class BurnerPresenter {
     }
 
     public  List<Burner> getBurners() {
-        GetRequest getRequest = new GetRequest(context);
-        JSONArray jsonArray = getRequest.request("http://10.0.2.2:8000/burner/");
-        List<Burner> burners = new ArrayList<>();
 
+        GetRequest getRequest = new GetRequest(context, "http://10.0.2.2:8000/burner/");
+        GetResponse response = new GetResponse(getRequest);
+        Thread thread = new Thread(response);
+        thread.start();
+  
         /*try{
             JSONArray jsonArray = new JSONArray(jsonObject);
             for(int i=0; i<jsonArray.length(); i++) {
@@ -76,7 +79,7 @@ public class BurnerPresenter {
             e.printStackTrace();
         }*/
 
-        return burners;
+        return new ArrayList<>();
     }
 
     public Burner getBurnerFromJson(String json){
