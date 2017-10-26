@@ -72,7 +72,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         TextView burner_description = holder.view.findViewById(R.id.burner_description);
         burner_description.setText(currentBurner.getDescription());
 
-        final int ON = 1;
+        final int ON = 2;
         int burnerState = currentBurner.getBurnerState().getId();
         ImageView burner_image = holder.view.findViewById(R.id.burner_image);
         if(burnerState == ON){
@@ -95,6 +95,11 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
             burner_temperature.setText("Desligada");
         }
     }
+
+    public void setList(List<Burner> list) {
+        this.dataset = list;
+    }
+
 
     @Override
     public int getItemCount(){

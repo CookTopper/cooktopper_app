@@ -18,8 +18,8 @@ public class OptionsActivity extends AppCompatActivity implements
         MaterialSpinner.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
 
     private Burner currentBurner;
-    private final int ON = 1;
-    private final int OFF = 0;
+    private final int ON = 2;
+    private final int OFF = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -85,10 +85,10 @@ public class OptionsActivity extends AppCompatActivity implements
     private void changeBurnerState(int state) {
         BurnerState burnerState;
         if(state == ON){
-            burnerState = new BurnerState(1, "Ligada");
+            burnerState = new BurnerState(2, "Ligada");
         }
         else{
-            burnerState = new BurnerState(0, "Desligada");
+            burnerState = new BurnerState(1, "Desligada");
         }
         BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
         currentBurner.setBurnerState(burnerState);

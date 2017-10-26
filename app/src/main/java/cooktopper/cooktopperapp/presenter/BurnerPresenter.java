@@ -33,6 +33,8 @@ public class BurnerPresenter {
         PutRequest putRequest = new PutRequest();
         JSONObject jsonObject = new JSONObject();
         try{
+            jsonObject.put("description", currentBurner.getTemperature().getId());
+            jsonObject.put("stove", currentBurner.getTemperature().getId());
             jsonObject.put("temperature", currentBurner.getTemperature().getId());
             jsonObject.put("burner_state", currentBurner.getBurnerState().getId());
 
@@ -42,7 +44,7 @@ public class BurnerPresenter {
         }
 
         String idAsString = String.valueOf(currentBurner.getId());
-        putRequest.execute("http://10.0.2.2:8000/burner/" + idAsString, jsonObject.toString());
+        putRequest.execute("http://10.0.2.2:8000/burner/" + idAsString + "/", jsonObject.toString());
 
        return putRequest.getResponse();
     }
@@ -74,15 +76,18 @@ public class BurnerPresenter {
         try{
             jsonArray = new JSONArray(response);
             for(int i=0; i<jsonArray.length(); i++){
-                int currentBurnerId = jsonArray.getJSONObject(i).getInt("id");
+                int currentBurnerStateId = jsonArray.getJSONObject(i).getInt("burner_state");
                 BurnerState burnerState = burnerStatePresenter.getBurnerStateById(
-                        String.valueOf(currentBurnerId));
+                        String.valueOf(currentBurnerStateId));
 
-                Stove stove = stovePresenter.getStoveById(String.valueOf(currentBurnerId));
+                int currentStoveId = jsonArray.getJSONObject(i).getInt("stove");
+                Stove stove = stovePresenter.getStoveById(String.valueOf(currentStoveId));
 
+                int currentTemperatureId = jsonArray.getJSONObject(i).getInt("temperature");
                 Temperature temperature = temperaturePresenter.getTemperatureById(String
-                        .valueOf(currentBurnerId));
+                        .valueOf(currentTemperatureId));
 
+                int currentBurnerId = jsonArray.getJSONObject(i).getInt("id");
                 Burner burner = new Burner(currentBurnerId,
                         jsonArray.getJSONObject(i).getString("description"),
                         stove,

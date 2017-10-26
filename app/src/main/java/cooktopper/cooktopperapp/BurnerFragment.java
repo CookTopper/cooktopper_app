@@ -22,7 +22,7 @@ import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 public class BurnerFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
+    private BurnerListAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
 
     public BurnerFragment(){
@@ -50,5 +50,14 @@ public class BurnerFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        BurnerPresenter burnerPresenter = new BurnerPresenter(getContext());
+        List<Burner> burners = burnerPresenter.getBurners();
+        adapter.setList(burners);
+        adapter.notifyDataSetChanged();
+        super.onResume();
     }
 }
