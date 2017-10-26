@@ -75,6 +75,38 @@
         android:visibility="gone"
         android:id="@+id/burner_off_layout">
 
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="Ligar às:"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_width="0dp"/>
+
+            <Button
+                android:id="@+id/set_time_button"
+                android:text="Definir Hora"
+                android:layout_weight="7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.Button" />
+
+            <TextView
+                android:id="@+id/hour_text_view"
+                android:visibility="gone"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:layout_width="0dp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

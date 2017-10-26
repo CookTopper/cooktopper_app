@@ -1,14 +1,21 @@
 package cooktopper.cooktopperapp;
 
+import android.app.TimePickerDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.gson.Gson;
 import com.jaredrummler.materialspinner.MaterialSpinner;
+
+import java.util.Calendar;
 
 import cooktopper.cooktopperapp.models.Burner;
 import cooktopper.cooktopperapp.models.BurnerState;
@@ -16,7 +23,8 @@ import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 
 public class OptionsActivity extends AppCompatActivity implements
-        MaterialSpinner.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener {
+        MaterialSpinner.OnItemSelectedListener, CompoundButton.OnCheckedChangeListener,
+        View.OnClickListener {
 
     private Burner currentBurner;
     private final int ON = 2;
@@ -38,6 +46,9 @@ public class OptionsActivity extends AppCompatActivity implements
         Switch burnerState = findViewById(R.id.burner_state);
         burnerState.setOnCheckedChangeListener(this);
         setSwitchInitialState(burnerState);
+
+        Button setTimeButton = findViewById(R.id.set_time_button);
+        setTimeButton.setOnClickListener(this);
     }
 
     @Override
@@ -114,5 +125,31 @@ public class OptionsActivity extends AppCompatActivity implements
         BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
         currentBurner.setTemperature(temperature);
         burnerPresenter.updateBurner(currentBurner);
+    }
+
+    @Override
+    public void onClick(View v){
+        switch(v.getId()){
+            case R.id.set_time_button:
+                showTimePicker();;
+                break;
+        }
+    }
+
+    private void showTimePicker(){
+        TimePickerDialog timePicker;
+        Calendar currentTime = Calendar.getInstance();
+        final Button setTimeButton = findViewById(R.id.set_time_button);
+        final TextView hourTextView = findViewById(R.id.hour_text_view);
+        timePicker = new TimePickerDialog(OptionsActivity.this, new TimePickerDialog.OnTimeSetListener(){
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute){
+               hourTextView.setText(hourOfDay + ":" + minute);
+               hourTextView.setVisibility(View.VISIBLE);
+               setTimeButton.setVisibility(View.GONE);
+            }
+        }, currentTime.get(Calendar.HOUR_OF_DAY), currentTime.get(Calendar.MINUTE), true);
+
+        timePicker.show();
     }
 }
