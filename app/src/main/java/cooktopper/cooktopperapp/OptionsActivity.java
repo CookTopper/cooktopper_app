@@ -12,6 +12,7 @@ import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import cooktopper.cooktopperapp.models.Burner;
 import cooktopper.cooktopperapp.models.BurnerState;
+import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 
 public class OptionsActivity extends AppCompatActivity implements
@@ -41,7 +42,7 @@ public class OptionsActivity extends AppCompatActivity implements
 
     @Override
     public void onItemSelected(MaterialSpinner view, int position, long id, Object item){
-
+        changeBurnerTemperature(position);
     }
 
     @Override
@@ -95,4 +96,23 @@ public class OptionsActivity extends AppCompatActivity implements
         burnerPresenter.updateBurner(currentBurner);
     }
 
+    private void changeBurnerTemperature(int temperatureId) {
+        Temperature temperature = null;
+        final int BAIXA = 0, MEDIA = 1, ALTA = 2;
+        switch(temperatureId){
+            case BAIXA:
+                temperature = new Temperature(12, "baixa");
+                break;
+            case MEDIA:
+                temperature = new Temperature(11, "media");
+                break;
+            case ALTA:
+                temperature = new Temperature(1, "alta");
+                break;
+        }
+
+        BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
+        currentBurner.setTemperature(temperature);
+        burnerPresenter.updateBurner(currentBurner);
+    }
 }

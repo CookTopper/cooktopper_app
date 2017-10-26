@@ -12,7 +12,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.RunnableFuture;
 
 import cooktopper.cooktopperapp.models.BurnerState;
 import cooktopper.cooktopperapp.models.Stove;
@@ -33,8 +32,8 @@ public class BurnerPresenter {
         PutRequest putRequest = new PutRequest();
         JSONObject jsonObject = new JSONObject();
         try{
-            jsonObject.put("description", currentBurner.getTemperature().getId());
-            jsonObject.put("stove", currentBurner.getTemperature().getId());
+            jsonObject.put("description", currentBurner.getDescription());
+            jsonObject.put("stove", currentBurner.getStove().getId());
             jsonObject.put("temperature", currentBurner.getTemperature().getId());
             jsonObject.put("burner_state", currentBurner.getBurnerState().getId());
 
