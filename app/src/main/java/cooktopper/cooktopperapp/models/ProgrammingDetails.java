@@ -5,16 +5,24 @@ public class ProgrammingDetails {
     private int id;
     private int programmedTime;
     private int expectedDuration;
-    private ProgrammingType programmingType;
     private Temperature temperature;
+    private BurnerState burnerState;
 
     public ProgrammingDetails(int id, int programmedTime, int expectedDuration,
-                              ProgrammingType programmingType, Temperature temperature){
+                              Temperature temperature, BurnerState burnerState){
         setId(id);
         setProgrammedTime(programmedTime);
         setExpectedDuration(expectedDuration);
-        setProgrammingType(programmingType);
         setTemperature(temperature);
+        setBurnerState(burnerState);
+    }
+
+    public ProgrammingDetails(int programmedTime, int expectedDuration, Temperature temperature,
+                              BurnerState burnerState){
+        setProgrammedTime(programmedTime);
+        setExpectedDuration(expectedDuration);
+        setTemperature(temperature);
+        setBurnerState(burnerState);
     }
 
     public int getId(){
@@ -41,19 +49,19 @@ public class ProgrammingDetails {
         this.expectedDuration = expectedDuration;
     }
 
-    public ProgrammingType getProgrammingType(){
-        return programmingType;
-    }
-
-    public void setProgrammingType(ProgrammingType programmingType){
-        this.programmingType = programmingType;
-    }
-
     public Temperature getTemperature(){
         return temperature;
     }
 
     public void setTemperature(Temperature temperature){
         this.temperature = temperature;
+    }
+
+    public BurnerState getBurnerState(){
+        return burnerState;
+    }
+
+    public void setBurnerState(BurnerState burnerState){
+        this.burnerState = burnerState;
     }
 }

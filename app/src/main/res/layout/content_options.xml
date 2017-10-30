@@ -66,6 +66,51 @@
 
         </LinearLayout>
 
+        <TextView
+            android:text="Agendar desligamento"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="12sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="Desligar às:"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_width="0dp"/>
+
+            <Button
+                android:id="@+id/set_time_to_turn_off_button_on_layout"
+                android:text="Definir Hora"
+                android:layout_weight="7"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:theme="@style/AppTheme.Button" />
+
+            <TextView
+                android:id="@+id/hour_to_turn_off_text_view_on_layout"
+                android:visibility="gone"
+                android:gravity="center_vertical|right"
+                android:layout_height="wrap_content"
+                android:layout_weight="7"
+                android:layout_width="0dp"
+                android:textSize="18sp"/>
+
+        </LinearLayout>
+
     </LinearLayout>
 
     <LinearLayout
@@ -185,7 +230,7 @@
                     android:layout_width="0dp"/>
 
                 <Button
-                    android:id="@+id/set_time_to_turn_off_button"
+                    android:id="@+id/set_time_to_turn_off_button_off_layout"
                     android:text="Definir Hora"
                     android:layout_weight="7"
                     android:layout_width="0dp"
@@ -193,7 +238,7 @@
                     android:theme="@style/AppTheme.Button" />
 
                 <TextView
-                    android:id="@+id/hour_to_turn_off_text_view"
+                    android:id="@+id/hour_to_turn_off_text_view_off_layout"
                     android:visibility="gone"
                     android:gravity="center_vertical|right"
                     android:layout_height="wrap_content"
