@@ -3,19 +3,19 @@ package cooktopper.cooktopperapp.models;
 public class Programming {
 
     private Burner burner;
-    private ProgrammingType programmingType;
+    private ProgrammingDetails programmingDetails;
 
-    public Programming(Burner burner, ProgrammingType programmingType){
+    public Programming(Burner burner, ProgrammingDetails programmingDetails){
         setBurner(burner);
-        setProgrammingType(programmingType);
+        setProgrammingDetails(programmingDetails);
     }
 
-    public ProgrammingType getProgrammingType(){
-        return programmingType;
+    public ProgrammingDetails getProgrammingDetails(){
+        return programmingDetails;
     }
 
-    public void setProgrammingType(ProgrammingType programmingType){
-        this.programmingType = programmingType;
+    public void setProgrammingDetails(ProgrammingDetails programmingDetails){
+        this.programmingDetails = programmingDetails;
     }
 
     public Burner getBurner(){
