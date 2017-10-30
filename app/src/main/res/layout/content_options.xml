@@ -75,6 +75,18 @@
         android:visibility="gone"
         android:id="@+id/burner_off_layout">
 
+        <TextView
+            android:text="Agendar para ligar"
+            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="12sp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
         <LinearLayout
             android:weightSum="10"
             android:layout_margin="10dp"
@@ -90,7 +102,7 @@
                 android:layout_width="0dp"/>
 
             <Button
-                android:id="@+id/set_time_button"
+                android:id="@+id/set_time_to_turn_on_button"
                 android:text="Definir Hora"
                 android:layout_weight="7"
                 android:layout_width="0dp"
@@ -98,14 +110,107 @@
                 android:theme="@style/AppTheme.Button" />
 
             <TextView
-                android:id="@+id/hour_text_view"
+                android:id="@+id/hour_to_turn_on_text_view"
                 android:visibility="gone"
-                android:gravity="center_vertical"
+                android:gravity="center_vertical|right"
                 android:layout_height="wrap_content"
                 android:layout_weight="7"
-                android:layout_width="0dp"/>
+                android:layout_width="0dp"
+                android:textSize="18sp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:text="Clique na hora para alterá-la"
+            android:id="@+id/change_hour_hint"
+            android:visibility="gone"
+            android:gravity="center_vertical|right"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:textSize="10sp"/>
+
+        <LinearLayout
+            android:weightSum="10"
+            android:layout_margin="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:text="Com a temperatura:"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:layout_width="0dp"/>
+
+            <com.jaredrummler.materialspinner.MaterialSpinner
+                android:id="@+id/schedule_temperature"
+                android:layout_width="0dp"
+                android:layout_weight="7"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:id="@+id/schedule_burner_off_layout">
+
+            <TextView
+                android:text="Agendar desligamento (opcional)"
+                android:gravity="center_vertical"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:textSize="12sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"/>
+
+            <LinearLayout
+                android:weightSum="10"
+                android:layout_margin="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:text="Desligar às:"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:layout_width="0dp"/>
+
+                <Button
+                    android:id="@+id/set_time_to_turn_off_button"
+                    android:text="Definir Hora"
+                    android:layout_weight="7"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/AppTheme.Button" />
+
+                <TextView
+                    android:id="@+id/hour_to_turn_off_text_view"
+                    android:visibility="gone"
+                    android:gravity="center_vertical|right"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="7"
+                    android:layout_width="0dp"
+                    android:textSize="18sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/confirm_scheduling_button"
+            android:text="Confirmar Agendamento"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Button" />
 
     </LinearLayout>
 
