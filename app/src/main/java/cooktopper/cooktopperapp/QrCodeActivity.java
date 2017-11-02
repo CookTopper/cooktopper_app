@@ -65,7 +65,7 @@ public class QrCodeActivity extends AppCompatActivity {
                 .setBarcodeFormats(Barcode.QR_CODE)
                 .build();
         cameraSource = new CameraSource.Builder(this, barcodeDetector)
-                .setRequestedPreviewSize(1366, 768)
+                .setRequestedPreviewSize(1024, 768)
                 .build();
         createCameraEvent();
         createBarcodeDetector();

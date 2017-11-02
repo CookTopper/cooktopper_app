@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import cooktopper.cooktopperapp.R;
 import cooktopper.cooktopperapp.models.BurnerState;
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.models.Temperature;
@@ -43,7 +44,7 @@ public class BurnerPresenter {
         }
 
         String idAsString = String.valueOf(currentBurner.getId());
-        putRequest.execute("http://10.0.2.2:8000/burner/" + idAsString + "/", jsonObject.toString());
+        putRequest.execute("http://192.168.0.49:8000/burner/" + idAsString + "/", jsonObject.toString());
 
        return putRequest.getResponse();
     }
@@ -53,7 +54,9 @@ public class BurnerPresenter {
         GetRequest getRequest = new GetRequest();
         String response = "";
         try{
-            response =  getRequest.execute("http://10.0.2.2:8000/burner/").get().toString();
+            response =  getRequest.execute("http://" +
+                    context.getResources().getString(R.string.webserver_ip) + "/burner/")
+                    .get().toString();
         } catch(InterruptedException e){
             e.printStackTrace();
         } catch(ExecutionException e){
