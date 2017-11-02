@@ -39,7 +39,7 @@ public class TemperaturePresenter {
         GetRequest getRequest = new GetRequest();
         String response = "";
         try{
-            response =  getRequest.execute("http://10.0.2.2:8000/temperature/?id=" + id).get()
+            response =  getRequest.execute("http://192.168.0.49:8000/temperature/?id=" + id).get()
                     .toString();
         } catch(InterruptedException e){
             e.printStackTrace();
