@@ -130,9 +130,10 @@ public class BurnerPresenter {
             Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
-        postRequest.execute("http://192.168.0.49:8000/programming_details/", jsonObject.toString());
+        postRequest.execute("http://192.168.0.49:8000/request_burner/", jsonObject.toString());
+        int response = postRequest.getResponse();
 
-        return postRequest.getResponse();
+        return response;
     }
 
     public int scheduleBurnerOnAndOff(Burner currentBurner, int hourOn, int minuteOn,
