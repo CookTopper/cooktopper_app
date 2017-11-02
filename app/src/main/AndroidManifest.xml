@@ -19,7 +19,6 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
@@ -29,6 +28,7 @@
             android:label="@string/title_activity_options"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
         <activity android:name=".QrCodeActivity"></activity>
 
         <meta-data android:name="com.google.gms.vision.DEPENDENCIES" android:value="barcode"/>
