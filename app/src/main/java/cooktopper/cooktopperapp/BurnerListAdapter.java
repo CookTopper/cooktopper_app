@@ -70,7 +70,12 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
     private void setBurnerInfo(Burner currentBurner, ViewHolder holder){
 
         TextView burner_description = holder.view.findViewById(R.id.burner_description);
-        burner_description.setText(currentBurner.getDescription());
+        if(currentBurner.getDescription().equals("1")){
+            burner_description.setText("Boca Pequena");
+        }
+        else {
+            burner_description.setText("Boca Grande");
+        }
 
         final int ON = 2;
         int burnerState = currentBurner.getBurnerState().getId();
@@ -78,21 +83,10 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         if(burnerState == ON){
             //Sets burner image to on burner image
             burner_image.setImageDrawable(context.getResources().getDrawable(R.drawable.fire_on, null));
-
-            //Sets time and temperature info
-            TextView burner_temperature = holder.view.findViewById(R.id.temperature);
-            burner_temperature.setText("Temperatura: " + currentBurner.getTemperature().getDescription());
-
-            TextView burner_time = holder.view.findViewById(R.id.time);
-            burner_time.setText("1m26s");
         }
         else {
             //Sets burner image to off burner image
             burner_image.setImageDrawable(context.getResources().getDrawable(R.drawable.fire_off, null));
-
-            //Sets temperature as off
-            TextView burner_temperature = holder.view.findViewById(R.id.temperature);
-            burner_temperature.setText("Desligada");
         }
     }
 

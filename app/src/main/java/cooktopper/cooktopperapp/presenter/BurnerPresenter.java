@@ -48,7 +48,7 @@ public class BurnerPresenter {
             Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
-        postRequest.execute("http://10.0.2.2:8000/request_burner", jsonObject.toString());
+        postRequest.execute("http://192.168.0.49:8000/request_burner", jsonObject.toString());
         int response = postRequest.getResponse();
 
         return response;
@@ -85,7 +85,7 @@ public class BurnerPresenter {
     }
 
     private int scheduleBurner(Programming programming){
-        PutRequest putRequest = new PutRequest();
+        PostRequest postRequest = new PostRequest();
         JSONObject jsonObject = new JSONObject();
         try{
             jsonObject.put("new_burner_state", programming.getBurner().getBurnerState().getId());
@@ -99,9 +99,9 @@ public class BurnerPresenter {
             Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
-        putRequest.execute("http://10.0.2.2:8000/programming", jsonObject.toString());
+        postRequest.execute("http://192.168.0.49:8000/programming_details", jsonObject.toString());
 
-        return putRequest.getResponse();
+        return postRequest.getResponse();
     }
 
     public int scheduleBurnerOnAndOff(Burner currentBurner, int hourOn, int minuteOn,
@@ -151,6 +151,7 @@ public class BurnerPresenter {
             response =  getRequest.execute("http://" +
                     context.getResources().getString(R.string.webserver_ip) + "/burner/")
                     .get().toString();
+
         } catch(InterruptedException e){
             e.printStackTrace();
         } catch(ExecutionException e){

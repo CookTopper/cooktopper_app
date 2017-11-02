@@ -25,9 +25,8 @@ public class BurnerStatePresenter {
         GetRequest getRequest = new GetRequest();
         String response = "";
         try{
-            response =  getRequest.execute("http://" +
-                    context.getResources().getString(R.string.webserver_ip) + "/burner_state/?id=" +
-                    id).get().toString();
+            response =  getRequest.execute("http://192.168.0.49:8000/burner_state/?id=" + id).get()
+                    .toString();
         } catch(InterruptedException e){
             e.printStackTrace();
         } catch(ExecutionException e){
