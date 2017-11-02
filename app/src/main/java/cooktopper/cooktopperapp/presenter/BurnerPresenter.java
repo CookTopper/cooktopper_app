@@ -220,7 +220,8 @@ public class BurnerPresenter {
                         jsonArray.getJSONObject(i).getString("description"),
                         stove,
                         temperature,
-                        burnerState);
+                        burnerState,
+                        jsonArray.getJSONObject(i).getInt("time"));
 
                 burners.add(burner);
             }

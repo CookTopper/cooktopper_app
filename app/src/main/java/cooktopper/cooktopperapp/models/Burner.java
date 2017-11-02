@@ -7,13 +7,16 @@ public class Burner {
     private Stove stove;
     private Temperature temperature;
     private BurnerState burnerState;
+    private int time;
 
-    public Burner(int id, String description, Stove stove, Temperature temperature, BurnerState burnerState) {
+    public Burner(int id, String description, Stove stove, Temperature temperature,
+                  BurnerState burnerState, int time) {
         setId(id);
         setDescription(description);
         setStove(stove);
         setTemperature(temperature);
         setBurnerState(burnerState);
+        setTime(time);
     }
 
     public int getId(){
@@ -54,5 +57,13 @@ public class Burner {
 
     public void setBurnerState(BurnerState burnerState){
         this.burnerState = burnerState;
+    }
+
+    public int getTime(){
+        return time;
+    }
+
+    public void setTime(int time){
+        this.time = time;
     }
 }
