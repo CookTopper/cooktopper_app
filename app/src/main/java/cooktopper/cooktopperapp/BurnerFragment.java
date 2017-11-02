@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,17 +50,18 @@ public class BurnerFragment extends Fragment {
         adapter = new BurnerListAdapter(burners, getContext());
         recyclerView.setAdapter(adapter);
 
-        Thread thread = new Thread() {
+        Thread listUpdater = new Thread() {
             @Override
             public void run() {
                 try {
                     while(true) {
-                        sleep(1000);
                         getActivity().runOnUiThread(new Runnable(){
                             public void run(){
-                                refreshData();
+                                if(adapter.updateList())
+                                    refreshData();
                             }
                         });
+                        sleep(5000);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -67,7 +69,7 @@ public class BurnerFragment extends Fragment {
             }
         };
 
-        thread.start();
+        listUpdater.start();
 
         return view;
     }
@@ -75,6 +77,8 @@ public class BurnerFragment extends Fragment {
     private void refreshData() {
         BurnerPresenter burnerPresenter = new BurnerPresenter(getContext());
         List<Burner> burners = burnerPresenter.getBurners();
+        Log.d("Updating List", burners.get(0).getTemperature().getDescription()+" "
+                +burners.get(1).getTemperature().getDescription());
         adapter.setList(burners);
         adapter.notifyDataSetChanged();
     }

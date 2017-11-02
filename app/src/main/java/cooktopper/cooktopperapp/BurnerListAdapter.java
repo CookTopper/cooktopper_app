@@ -2,7 +2,6 @@ package cooktopper.cooktopperapp;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,7 +26,9 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
     private Context context;
     private RadioGroup temperatureRadioGroup;
     private Button burnerStateButton;
+    private RadioGroup.OnCheckedChangeListener radioGroupListener;
     private boolean cleanRadioGroup = false;
+    private boolean updateList = true;
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener,
             RadioGroup.OnCheckedChangeListener{
@@ -39,7 +40,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
             view = viewToBeSet;
             view.setOnClickListener(this);
             temperatureRadioGroup = view.findViewById(R.id.temperature_radio_group);
-            temperatureRadioGroup.setOnCheckedChangeListener(this);
+            radioGroupListener = this;
             burnerStateButton = view.findViewById(R.id.burner_state);
             burnerStateButton.setOnClickListener(this);
         }
@@ -59,6 +60,9 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
                 int currentState = currentBurner.getBurnerState().getId();
                 final int ON = 2;
                 if(currentState == ON){
+                    turnBurnerOff(currentBurner);
+                }
+                else {
                     Toast.makeText(context, "Selecione a temperatura", Toast.LENGTH_LONG).show();
                     cleanRadioGroup = true;
                     temperatureRadioGroup.clearCheck();
@@ -69,9 +73,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
                     RadioGroup temperatureOptions = view.findViewById(R.id.temperature_radio_group);
                     temperatureOptions.setVisibility(View.VISIBLE);
                     cleanRadioGroup = false;
-                }
-                else {
-                    turnBurnerOff(currentBurner);
+                    updateList = false;
                 }
             }
         }
@@ -92,14 +94,18 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
                         temperatureId = ALTA;
                         break;
                 }
-                turnBurnerOn(dataset.get(this.getAdapterPosition()), temperatureId);
+                updateBurner(dataset.get(this.getAdapterPosition()), temperatureId);
             }
         }
     }
 
     public BurnerListAdapter(List<Burner> dataset, Context context){
-       this. dataset = dataset;
-       this.context = context;
+        this.dataset = dataset;
+        this.context = context;
+    }
+
+    public boolean updateList(){
+        return this.updateList;
     }
 
     @Override
@@ -120,6 +126,8 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
 
     private void setBurnerInfo(final Burner currentBurner, final ViewHolder holder){
 
+        temperatureRadioGroup.setOnCheckedChangeListener(null);
+
         TextView burnerDescription = holder.view.findViewById(R.id.burner_description);
         setBurnerDescription(burnerDescription);
 
@@ -128,14 +136,14 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         final int ON = 2;
         int burnerState = currentBurner.getBurnerState().getId();
         if(burnerState == ON){
-           burnerStateButton.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
-           burnerStateButton.setText("Ligar");
+           burnerStateButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
+           burnerStateButton.setText("Desligar");
            burner_image.setImageDrawable(context.getResources().getDrawable(R.drawable.fire_on, null));
            showOnLayout(holder);
         }
         else {
-            burnerStateButton.setBackgroundColor(ContextCompat.getColor(context, R.color.colorAccent));
-            burnerStateButton.setText("Desligar");
+            burnerStateButton.setBackgroundColor(ContextCompat.getColor(context, R.color.green));
+            burnerStateButton.setText("Ligar");
             burner_image.setImageDrawable(context.getResources().getDrawable(R.drawable.fire_off, null));
             showOffLayout(holder);
         }
@@ -143,34 +151,11 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         int temperatureId = currentBurner.getTemperature().getId();
         setInitialTemperature(temperatureId, holder);
 
-        handleBurnerStateButton(holder, currentBurner);
-
-    }
-
-    private void handleBurnerStateButton(final ViewHolder holder, final Burner currentBurner){
-        Button burnerStateButton = holder.view.findViewById(R.id.burner_state);
-        final RadioGroup temperatureOptions = holder.view.findViewById(R.id.temperature_radio_group);
-        burnerStateButton.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                int currentState = currentBurner.getBurnerState().getId();
-                final int ON = 2;
-                if(currentState == ON){
-                    Toast.makeText(context, "Selecione a temperatura", Toast.LENGTH_LONG).show();
-                    cleanRadioGroup = true;
-                    temperatureOptions.clearCheck();
-                    showOnLayout(holder);
-                    cleanRadioGroup = false;
-                }
-                else{
-                    turnBurnerOff(currentBurner);
-                }
-            }
-        });
+        temperatureRadioGroup.setOnCheckedChangeListener(radioGroupListener);
     }
 
     private void setBurnerDescription(TextView burnerDescription) {
-        if(burnerDescription.getText().equals("1")){
+        if(burnerDescription.getText().toString().equals("1")){
             burnerDescription.setText("Boca Pequena");
         }
         else {
@@ -203,12 +188,26 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         burnerPresenter.updateBurner(currentBurner, time);
     }
 
-    private void turnBurnerOn(Burner currentBurner, int checkedId){
+    private void updateBurner(Burner currentBurner, int checkedId){
         BurnerPresenter burnerPresenter = new BurnerPresenter(context);
-        burnerPresenter.updateBurnerState(true, currentBurner);
+        final int ON = 2;
+        if(currentBurner.getBurnerState().getId() == ON){
+            changeTemperature(currentBurner, checkedId);
+        }
+        else {
+            burnerPresenter.updateBurnerState(true, currentBurner);
+            burnerPresenter.updateBurnerTemperature(checkedId, currentBurner);
+            int time = (int) (new Date().getTime() / 1000.0);
+            burnerPresenter.updateBurner(currentBurner, time);
+        }
+
+        updateList = true;
+    }
+
+    private void changeTemperature(Burner currentBurner, int checkedId){
+        BurnerPresenter burnerPresenter = new BurnerPresenter(context);
         burnerPresenter.updateBurnerTemperature(checkedId, currentBurner);
-        int time = (int) (new Date().getTime() / 1000.0);
-        burnerPresenter.updateBurner(currentBurner, time);
+        burnerPresenter.updateBurner(currentBurner, currentBurner.getTime());
     }
 
     private void showOnLayout(ViewHolder holder){
