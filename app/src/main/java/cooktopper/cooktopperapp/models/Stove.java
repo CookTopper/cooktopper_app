@@ -4,17 +4,19 @@ public class Stove {
 
     private int id;
     private String token;
+    private String mobileMacAddress;
 
-    public Stove(int id, String token){
+    public Stove(int id, String token, String mobileMacAddress){
         setId(id);
         setToken(token);
+        setMobileMacAddress(mobileMacAddress);
     }
 
     public String getToken(){
         return token;
     }
 
-    public void setToken(String token){
+    private void setToken(String token){
         this.token = token;
     }
 
@@ -22,7 +24,16 @@ public class Stove {
         return id;
     }
 
-    public void setId(int id){
+    private void setId(int id){
         this.id = id;
     }
+
+    public String getMobileMacAddress() {
+        return mobileMacAddress;
+    }
+
+    public void setMobileMacAddress(String mobileMacAddress) {
+        this.mobileMacAddress = mobileMacAddress;
+    }
+
 }

@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Surface;
 import android.view.SurfaceHolder;
@@ -25,6 +26,12 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import org.w3c.dom.Text;
 
 import java.io.IOException;
+
+import cooktopper.cooktopperapp.models.Stove;
+import cooktopper.cooktopperapp.presenter.StovePresenter;
+import cooktopper.cooktopperapp.requests.GetRequest;
+import cooktopper.cooktopperapp.requests.PostRequest;
+import cooktopper.cooktopperapp.util.WifiUtil;
 
 public class QrCodeActivity extends AppCompatActivity {
 
@@ -124,11 +131,33 @@ public class QrCodeActivity extends AppCompatActivity {
                             vibrator.vibrate(10);
                             cameraDescription.setText(qrcodes.valueAt(0).displayValue);
                             Toast.makeText(getApplicationContext(),qrcodes.valueAt(0).displayValue, Toast.LENGTH_SHORT).show();
+
+                            WifiUtil deviceMacAddress = new WifiUtil();
+                            deviceMacAddress.macAddress = deviceMacAddress.getMacAddress(getApplicationContext());
+
+                            Log.d("MAC_ADDRESS: ", String.valueOf(deviceMacAddress.macAddress));
+
+                            StovePresenter stovePresenter = new StovePresenter(getApplicationContext());
+                            Stove stove = stovePresenter.getStoveByToken(qrcodes.valueAt(0).displayValue);
+
+                            if (stove == null) {
+                                Log.d("STOVE is >>>", " NULL");
+                                Toast.makeText(getApplicationContext(), "Invalid QRCode", Toast.LENGTH_SHORT).show();
+                                finish();
+                                return;
+                            }
+
+                            Log.d("WILL SET MAC: ", deviceMacAddress.macAddress);
+
+                            stove.setMobileMacAddress(deviceMacAddress.macAddress);
+                            stovePresenter.updateStoveFields(stove);
+
+                            finish();
+                            return;
                         }
                     });
                 }
             }
         });
     }
-
 }
