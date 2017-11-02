@@ -33,6 +33,36 @@ public class BurnerPresenter {
         this.context = context;
     }
 
+    public void updateBurnerState(boolean state, Burner burner) {
+        BurnerState burnerState;
+        if(state){
+            burnerState = new BurnerState(2, "Ligada");
+        }
+        else {
+            burnerState = new BurnerState(1, "Desligada");
+        }
+
+        burner.setBurnerState(burnerState);
+    }
+
+    public void updateBurnerTemperature(int temperatureId, Burner burner) {
+        Temperature temperature = null;
+        final int BAIXA = 0, MEDIA = 1, ALTA = 2;
+        switch(temperatureId){
+            case BAIXA:
+                temperature = new Temperature(12, "baixa");
+                break;
+            case MEDIA:
+                temperature = new Temperature(11, "media");
+                break;
+            case ALTA:
+                temperature = new Temperature(1, "alta");
+                break;
+        }
+
+        burner.setTemperature(temperature);
+    }
+
     public int updateBurner(Burner currentBurner, int time){
         PostRequest postRequest = new PostRequest();
         JSONObject jsonObject = new JSONObject();
@@ -41,13 +71,14 @@ public class BurnerPresenter {
             jsonObject.put("new_temperature", currentBurner.getTemperature().getId());
             jsonObject.put("new_burner_state", currentBurner.getBurnerState().getId());
             jsonObject.put("programmed_time", time);
+            jsonObject.put("programming_id", 0);
 
         }
         catch(JSONException jsonException){
             Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
-        postRequest.execute("http://192.168.0.49:8000/request_burner", jsonObject.toString());
+        postRequest.execute("http://192.168.0.49:8000/request_burner/", jsonObject.toString());
         int response = postRequest.getResponse();
 
         return response;
@@ -98,7 +129,7 @@ public class BurnerPresenter {
             Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
-        postRequest.execute("http://192.168.0.49:8000/programming_details", jsonObject.toString());
+        postRequest.execute("http://192.168.0.49:8000/programming_details/", jsonObject.toString());
 
         return postRequest.getResponse();
     }

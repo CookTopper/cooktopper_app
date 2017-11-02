@@ -49,15 +49,33 @@ public class BurnerFragment extends Fragment {
         adapter = new BurnerListAdapter(burners, getContext());
         recyclerView.setAdapter(adapter);
 
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while(true) {
+                        sleep(1000);
+                        getActivity().runOnUiThread(new Runnable(){
+                            public void run(){
+                                refreshData();
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        thread.start();
+
         return view;
     }
 
-    @Override
-    public void onResume() {
+    private void refreshData() {
         BurnerPresenter burnerPresenter = new BurnerPresenter(getContext());
         List<Burner> burners = burnerPresenter.getBurners();
         adapter.setList(burners);
         adapter.notifyDataSetChanged();
-        super.onResume();
     }
 }
