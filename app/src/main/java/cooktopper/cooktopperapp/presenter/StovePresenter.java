@@ -10,11 +10,9 @@ import org.json.JSONObject;
 import java.util.concurrent.ExecutionException;
 
 import cooktopper.cooktopperapp.R;
-import cooktopper.cooktopperapp.models.Burner;
 import cooktopper.cooktopperapp.models.Stove;
-import cooktopper.cooktopperapp.requests.GetRequest;
-import cooktopper.cooktopperapp.requests.PostRequest;
-import cooktopper.cooktopperapp.requests.PutRequest;
+import cooktopper.cooktopperapp.presenter.requests.GetRequest;
+import cooktopper.cooktopperapp.presenter.requests.PutRequest;
 
 public class StovePresenter {
 
@@ -28,8 +26,8 @@ public class StovePresenter {
         GetRequest getRequest = new GetRequest();
         String response = "";
         try{
-            response =  getRequest.execute("http://192.168.0.49:8000/stove/?id=" + id).get()
-                    .toString();
+            response =  getRequest.execute("http://" + context.getResources()
+                    .getString(R.string.webserver_ip) +"/stove/?id=" + id).get().toString();
         } catch(InterruptedException e){
             e.printStackTrace();
         } catch(ExecutionException e){

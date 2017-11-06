@@ -1,6 +1,4 @@
-package cooktopper.cooktopperapp.requests;
-
-import android.util.Log;
+package cooktopper.cooktopperapp.presenter.requests;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

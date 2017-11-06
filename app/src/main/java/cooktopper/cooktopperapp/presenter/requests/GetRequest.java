@@ -1,6 +1,5 @@
-package cooktopper.cooktopperapp.requests;
+package cooktopper.cooktopperapp.presenter.requests;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 

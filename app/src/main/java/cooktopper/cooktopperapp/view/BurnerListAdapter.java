@@ -1,7 +1,6 @@
-package cooktopper.cooktopperapp;
+package cooktopper.cooktopperapp.view;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.List;
 
+import cooktopper.cooktopperapp.R;
 import cooktopper.cooktopperapp.models.Burner;
 import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 
@@ -49,11 +49,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         public void onClick(View v) {
             if(v == view){
                 BurnerPresenter burnerPresenter = new BurnerPresenter(context.getApplicationContext());
-                String burnerAsJson = burnerPresenter.getBurnerAsExtrasFormatJson(dataset.get(
-                        this.getAdapterPosition()));
-                Intent intent = new Intent(context, OptionsActivity.class);
-                intent.putExtra("burner_json", burnerAsJson);
-                context.startActivity(intent);
+
             }
             else if(v.getId() == R.id.burner_state){
                 Burner currentBurner = dataset.get(this.getAdapterPosition());
@@ -94,7 +90,10 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
                         temperatureId = ALTA;
                         break;
                 }
-                updateBurner(dataset.get(this.getAdapterPosition()), temperatureId);
+                TextView updatingWarning = view.findViewById(R.id.updating_warning);
+                updatingWarning.setText("Atualizando boca...");
+                updatingWarning.setVisibility(View.VISIBLE);
+                updateBurner(dataset.get(this.getAdapterPosition()), temperatureId, view);
             }
         }
     }
@@ -129,7 +128,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         temperatureRadioGroup.setOnCheckedChangeListener(null);
 
         TextView burnerDescription = holder.view.findViewById(R.id.burner_description);
-        setBurnerDescription(burnerDescription);
+        setBurnerDescription(burnerDescription,currentBurner);
 
         Button burnerStateButton = holder.view.findViewById(R.id.burner_state);
         ImageView burner_image = holder.view.findViewById(R.id.burner_image);
@@ -154,8 +153,8 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         temperatureRadioGroup.setOnCheckedChangeListener(radioGroupListener);
     }
 
-    private void setBurnerDescription(TextView burnerDescription) {
-        if(burnerDescription.getText().toString().equals("1")){
+    private void setBurnerDescription(TextView burnerDescription, Burner currentBurner) {
+        if(currentBurner.getDescription().equals("1")){
             burnerDescription.setText("Boca Pequena");
         }
         else {
@@ -188,7 +187,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         burnerPresenter.updateBurner(currentBurner, time);
     }
 
-    private void updateBurner(Burner currentBurner, int checkedId){
+    private void updateBurner(Burner currentBurner, int checkedId, View view){
         BurnerPresenter burnerPresenter = new BurnerPresenter(context);
         final int ON = 2;
         if(currentBurner.getBurnerState().getId() == ON){
@@ -201,7 +200,10 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
             burnerPresenter.updateBurner(currentBurner, time);
         }
 
+        TextView updatingWarning = view.findViewById(R.id.updating_warning);
+        updatingWarning.setVisibility(View.GONE);
         updateList = true;
+        Toast.makeText(context, "Bocas Atualizadas", Toast.LENGTH_SHORT).show();
     }
 
     private void changeTemperature(Burner currentBurner, int checkedId){

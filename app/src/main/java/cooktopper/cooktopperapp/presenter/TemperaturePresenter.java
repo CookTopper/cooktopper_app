@@ -4,14 +4,12 @@ import android.content.Context;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.concurrent.ExecutionException;
 
 import cooktopper.cooktopperapp.R;
-import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.models.Temperature;
-import cooktopper.cooktopperapp.requests.GetRequest;
+import cooktopper.cooktopperapp.presenter.requests.GetRequest;
 
 public class TemperaturePresenter {
 
@@ -40,8 +38,8 @@ public class TemperaturePresenter {
         GetRequest getRequest = new GetRequest();
         String response = "";
         try{
-            response =  getRequest.execute("http://192.168.0.49:8000/temperature/?id=" + id).get()
-                    .toString();
+            response =  getRequest.execute("http://" + context.getResources()
+                    .getString(R.string.webserver_ip) + "/temperature/?id=" + id).get().toString();
         } catch(InterruptedException e){
             e.printStackTrace();
         } catch(ExecutionException e){

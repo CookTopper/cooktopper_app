@@ -1,4 +1,4 @@
-package cooktopper.cooktopperapp;
+package cooktopper.cooktopperapp.view;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

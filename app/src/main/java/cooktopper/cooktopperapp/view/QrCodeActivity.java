@@ -1,8 +1,6 @@
-package cooktopper.cooktopperapp;
+package cooktopper.cooktopperapp.view;
 
-import android.*;
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Vibrator;
@@ -12,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.SparseArray;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -23,14 +20,11 @@ import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 
-import org.w3c.dom.Text;
-
 import java.io.IOException;
 
+import cooktopper.cooktopperapp.R;
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.presenter.StovePresenter;
-import cooktopper.cooktopperapp.requests.GetRequest;
-import cooktopper.cooktopperapp.requests.PostRequest;
 import cooktopper.cooktopperapp.util.WifiUtil;
 
 public class QrCodeActivity extends AppCompatActivity {
@@ -63,7 +57,7 @@ public class QrCodeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_qr_code);
+        setContentView(cooktopper.cooktopperapp.R.layout.activity_qr_code);
 
         cameraDescription = (TextView) findViewById(R.id.camera_title);
         cameraPreview = (SurfaceView) findViewById(R.id.camera_preview);

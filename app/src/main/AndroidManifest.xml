@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -25,12 +25,12 @@
         </activity>
 
         <activity
-            android:name=".OptionsActivity"
+            android:name=".view.OptionsActivity"
             android:label="@string/title_activity_options"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
-        <activity android:name=".QrCodeActivity"></activity>
+        <activity android:name=".view.QrCodeActivity"></activity>
 
         <meta-data android:name="com.google.gms.vision.DEPENDENCIES" android:value="barcode"/>
     </application>

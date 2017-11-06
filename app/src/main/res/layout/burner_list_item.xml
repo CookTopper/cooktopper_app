@@ -117,6 +117,13 @@
 
                     </RadioGroup>
 
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:id="@+id/updating_warning"
+                        style="@style/TextAppearance.AppCompat.Caption"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"/>
+
                 </LinearLayout>
 
             </LinearLayout>

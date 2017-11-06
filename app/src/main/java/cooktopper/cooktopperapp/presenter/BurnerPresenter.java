@@ -21,10 +21,9 @@ import cooktopper.cooktopperapp.models.Programming;
 import cooktopper.cooktopperapp.models.ProgrammingDetails;
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.models.Temperature;
-import cooktopper.cooktopperapp.requests.GetRequest;
+import cooktopper.cooktopperapp.presenter.requests.GetRequest;
 import cooktopper.cooktopperapp.models.Burner;
-import cooktopper.cooktopperapp.requests.PostRequest;
-import cooktopper.cooktopperapp.requests.PutRequest;
+import cooktopper.cooktopperapp.presenter.requests.PostRequest;
 
 public class BurnerPresenter {
 
@@ -79,7 +78,8 @@ public class BurnerPresenter {
             Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
-        postRequest.execute("http://192.168.0.49:8000/request_burner/", jsonObject.toString());
+        postRequest.execute("http://" + context.getResources().getString(R.string.webserver_ip) +
+                "/request_burner/", jsonObject.toString());
         int response = postRequest.getResponse();
 
         return response;
@@ -130,7 +130,9 @@ public class BurnerPresenter {
             Log.d("Error", "Problem while parsing burner to JSONObject");
         }
 
-        postRequest.execute("http://192.168.0.49:8000/request_burner/", jsonObject.toString());
+        postRequest.execute("http://" +
+                context.getResources().getString(R.string.webserver_ip) +
+                "/request_burner/", jsonObject.toString());
         int response = postRequest.getResponse();
 
         return response;

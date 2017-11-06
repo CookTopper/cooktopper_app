@@ -1,23 +1,17 @@
-package cooktopper.cooktopperapp;
+package cooktopper.cooktopperapp.view;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import cooktopper.cooktopperapp.R;
 import cooktopper.cooktopperapp.models.Burner;
-import cooktopper.cooktopperapp.models.BurnerState;
-import cooktopper.cooktopperapp.models.Stove;
-import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 
 public class BurnerFragment extends Fragment {
@@ -53,18 +47,19 @@ public class BurnerFragment extends Fragment {
         Thread listUpdater = new Thread() {
             @Override
             public void run() {
-                try {
-                    while(true) {
-                        getActivity().runOnUiThread(new Runnable(){
-                            public void run(){
-                                if(adapter.updateList())
-                                    refreshData();
+                while(true) {
+                    getActivity().runOnUiThread(new Runnable(){
+                        public void run(){
+                            if(adapter.updateList()){
+                                refreshData();
+                                try{
+                                    sleep(5000);
+                                } catch(InterruptedException e){
+                                    e.printStackTrace();
+                                }
                             }
-                        });
-                        sleep(5000);
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                        }
+                    });
                 }
             }
         };
@@ -77,8 +72,6 @@ public class BurnerFragment extends Fragment {
     private void refreshData() {
         BurnerPresenter burnerPresenter = new BurnerPresenter(getContext());
         List<Burner> burners = burnerPresenter.getBurners();
-        Log.d("Updating List", burners.get(0).getTemperature().getDescription()+" "
-                +burners.get(1).getTemperature().getDescription());
         adapter.setList(burners);
         adapter.notifyDataSetChanged();
     }
