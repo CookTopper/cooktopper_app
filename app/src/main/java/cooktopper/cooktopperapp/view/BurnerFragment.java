@@ -50,16 +50,15 @@ public class BurnerFragment extends Fragment {
                 while(true) {
                     getActivity().runOnUiThread(new Runnable(){
                         public void run(){
-                            if(adapter.updateList()){
+                            if(adapter.updateList())
                                 refreshData();
-                                try{
-                                    sleep(5000);
-                                } catch(InterruptedException e){
-                                    e.printStackTrace();
-                                }
-                            }
                         }
                     });
+                    try{
+                        sleep(5000);
+                    } catch(InterruptedException e){
+                        e.printStackTrace();
+                    }
                 }
             }
         };

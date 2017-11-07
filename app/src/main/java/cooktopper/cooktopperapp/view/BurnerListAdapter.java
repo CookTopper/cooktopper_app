@@ -203,7 +203,6 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         TextView updatingWarning = view.findViewById(R.id.updating_warning);
         updatingWarning.setVisibility(View.GONE);
         updateList = true;
-        Toast.makeText(context, "Bocas Atualizadas", Toast.LENGTH_SHORT).show();
     }
 
     private void changeTemperature(Burner currentBurner, int checkedId){
