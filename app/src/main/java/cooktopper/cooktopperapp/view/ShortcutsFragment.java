@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import cooktopper.cooktopperapp.R;
+
 public class ShortcutsFragment extends Fragment{
 
 

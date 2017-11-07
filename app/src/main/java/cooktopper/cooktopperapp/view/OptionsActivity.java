@@ -18,6 +18,7 @@ import java.util.Calendar;
 
 import cooktopper.cooktopperapp.R;
 import cooktopper.cooktopperapp.models.Burner;
+import cooktopper.cooktopperapp.models.BurnerState;
 import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.presenter.BurnerPresenter;
 
@@ -45,18 +46,17 @@ public class OptionsActivity extends AppCompatActivity implements
         Button setTimeButton = findViewById(R.id.set_time_to_turn_on_button);
         setTimeButton.setOnClickListener(this);
 
+        Button setTimeToTurnOffButtonOnLayout = findViewById(R.id.set_time_to_turn_off_button);
+        setTimeToTurnOffButtonOnLayout.setOnClickListener(this);
+
         Button confirmSchedulingButton = findViewById(R.id.confirm_scheduling_button);
         confirmSchedulingButton.setOnClickListener(this);
-
-        Button setTimeToTurnOffButtonOnLayout = findViewById(R.id.set_time_to_turn_off_button_on_layout);
-        setTimeToTurnOffButtonOnLayout.setOnClickListener(this);
 
     }
 
     @Override
     public void onItemSelected(MaterialSpinner view, int position, long id, Object item){
         switch(view.getId()){
-            //Temperature to turn on now
             case R.id.temperature:
                 changeBurnerTemperature(position);
                 break;
@@ -114,30 +114,63 @@ public class OptionsActivity extends AppCompatActivity implements
         }
     }
 
-    private void confirmScheduling(){
-        TextView hourTextViewOff = findViewById(R.id.hour_to_turn_off_text_view);
+    private boolean isScheduleToTurnOnEmpty() {
+        boolean isEmpty = false;
         TextView hourTextViewOn = findViewById(R.id.hour_to_turn_on_text_view);
-        if(hourTextViewOn.getText().length() == 0 && temperatureFromSchedule == null){
-            Toast.makeText(this, "Por favor, selecione a hora e a temperatura a qual a boca deve " +
-                    "ser ligada", Toast.LENGTH_LONG).show();
+        if(hourTextViewOn.getText().length() == 0 && temperatureFromSchedule == null) {
+            isEmpty = true;
         }
-        else if(hourTextViewOn.getText().length() == 0){
-            Toast.makeText(this, "Por favor, selecione a hora a qual a boca deve " +
-                    "ser ligada", Toast.LENGTH_LONG).show();
+
+        return isEmpty;
+    }
+
+    private boolean isScheduleToTurnOffEmpty() {
+        boolean isEmpty = false;
+        TextView hourTextViewOff = findViewById(R.id.hour_to_turn_off_text_view);
+        if(hourTextViewOff.getText().length() == 0){
+            isEmpty = true;
         }
-        else if(temperatureFromSchedule == null) {
+        return isEmpty;
+    }
+
+    private void confirmScheduling(){
+        TextView hourTextViewOn = findViewById(R.id.hour_to_turn_on_text_view);
+
+        if(isScheduleToTurnOnEmpty() && isScheduleToTurnOffEmpty()){
+            Toast.makeText(this, "Nenhuma informação de agendamento preenchida",
+                    Toast.LENGTH_LONG).show();
+        }
+        else if(!isScheduleToTurnOnEmpty() && isScheduleToTurnOffEmpty()){
+            if(hourTextViewOn.getText().length() == 0){
+                Toast.makeText(this, "Por favor, selecione a hora a qual a boca deve " +
+                        "ser ligada", Toast.LENGTH_LONG).show();
+            }
+            if(temperatureFromSchedule == null) {
                 Toast.makeText(this, "Por favor, selecione a temperatura a qual a boca deve " +
                         "ser ligada", Toast.LENGTH_LONG).show();
             }
-            /*else if(hourTextViewOff.getText().length() == 0){
-                    confirmNoTimeToTurnOff();
+            else {
+                confirmNoTimeToTurnOff();
+            }
+        }
+        else if (!isScheduleToTurnOffEmpty() && isScheduleToTurnOnEmpty()){
+            //agendar desligamento
+        }
+        else {
+                if(hourTextViewOn.getText().length() == 0){
+                    Toast.makeText(this, "Por favor, selecione a hora a qual a boca deve " +
+                            "ser ligada", Toast.LENGTH_LONG).show();
                 }
-                else{
+                if(temperatureFromSchedule == null) {
+                    Toast.makeText(this, "Por favor, selecione a temperatura a qual a boca deve " +
+                            "ser ligada", Toast.LENGTH_LONG).show();
+                }
+                else {
                     BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
                     changeBurnerState(ON);
 
                     TextView hourOnTextView = findViewById(R.id.hour_to_turn_on_text_view);
-                    TextView hourOffTextView = findViewById(R.id.hour_to_turn_off_text_view_off_layout);
+                    TextView hourOffTextView = findViewById(R.id.hour_to_turn_off_text_view);
                     String[] timeOn = hourOnTextView.getText().toString().split(":");
                     String[] timeOff = hourOffTextView.getText().toString().split(":");
                     burnerPresenter.scheduleBurnerOnAndOff(currentBurner,
@@ -148,7 +181,20 @@ public class OptionsActivity extends AppCompatActivity implements
                     Toast.makeText(getApplicationContext(), "Agendamento realizado com sucesso",
                             Toast.LENGTH_LONG).show();
                     finish();
-                }*/
+                }
+        }
+    }
+
+    private void changeBurnerState(int state) {
+        BurnerState burnerState;
+        if(state == ON){
+            burnerState = new BurnerState(2, "Ligada");
+        }
+        else {
+            burnerState = new BurnerState(1, "Desligada");
+        }
+
+        currentBurner.setBurnerState(burnerState);
     }
 
     private void confirmNoTimeToTurnOff(){
@@ -159,7 +205,7 @@ public class OptionsActivity extends AppCompatActivity implements
                 "desligamento?");
         builder.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
             public void onClick(DialogInterface arg0, int arg1){
-                /*BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
+                BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
                 changeBurnerState(ON);
                 String[] time = hourTextView.getText().toString().split(":");
                 burnerPresenter.scheduleBurnerOnOrOff(currentBurner,
@@ -167,7 +213,7 @@ public class OptionsActivity extends AppCompatActivity implements
                         Integer.parseInt(time[1]));
                 Toast.makeText(getApplicationContext(),
                         "Agendamento realizado com sucesso", Toast.LENGTH_LONG).show();
-                finish();*/
+                finish();
             }
         });
         builder.setNegativeButton("Não", new DialogInterface.OnClickListener(){
