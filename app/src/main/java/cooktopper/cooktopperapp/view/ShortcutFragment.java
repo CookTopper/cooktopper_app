@@ -5,22 +5,21 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import cooktopper.cooktopperapp.R;
 
-public class ShortcutsFragment extends Fragment{
+public class ShortcutFragment extends Fragment {
 
-
-    public ShortcutsFragment(){
+    public ShortcutFragment(){
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState){
-        View rootView = inflater.inflate(R.layout.fragment_shortcuts, container, false);
-        TextView textView = rootView.findViewById(R.id.a);
-        textView.setText("atalhos");
-        return rootView;
+
+        View view = inflater.inflate(R.layout.fragment_shortcut, container, false);
+
+        return view;
     }
+
 }

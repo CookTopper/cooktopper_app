@@ -17,7 +17,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
             fragmentToBeReturned = new BurnerFragment();
         }
         else{
-            fragmentToBeReturned = new ShortcutsFragment();
+            fragmentToBeReturned = new ShortcutListFragment();
         }
 
         return fragmentToBeReturned;

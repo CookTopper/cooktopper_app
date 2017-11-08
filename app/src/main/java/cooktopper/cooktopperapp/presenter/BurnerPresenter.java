@@ -119,12 +119,10 @@ public class BurnerPresenter {
         PostRequest postRequest = new PostRequest();
         JSONObject jsonObject = new JSONObject();
         try{
-            jsonObject.put("new_burner_state", programming.getBurner().getBurnerState().getId());
-            jsonObject.put("programmed_time", programming.getProgrammingDetails()
-                    .getProgrammedTime());
-            jsonObject.put("expected_duration", programming.getProgrammingDetails()
-                    .getExpectedDuration());
-            jsonObject.put("temperature", programming.getProgrammingDetails().getTemperature());
+            jsonObject.put("burner_state", programming.getBurnerState().getId());
+            jsonObject.put("programmed_time", programming.getProgrammedTime());
+            jsonObject.put("expected_duration", programming.getExpectedDuration());
+            jsonObject.put("temperature", programming.getTemperature());
         }
         catch(JSONException jsonException){
             Log.d("Error", "Problem while parsing burner to JSONObject");
@@ -151,7 +149,8 @@ public class BurnerPresenter {
 
         ProgrammingDetails programmingDetails = new ProgrammingDetails(programmedHour,
                 expectedDuration, currentBurner.getTemperature(), currentBurner.getBurnerState());
-        Programming programming = new Programming(currentBurner, programmingDetails);
+        Programming programming = null;
+        //Programming programming = new Programming(currentBurner, programmingDetails);
 
         int scheduleResponse = scheduleBurner(programming);
 
@@ -170,7 +169,9 @@ public class BurnerPresenter {
 
         ProgrammingDetails programmingDetails = new ProgrammingDetails(programmedHour,
                 expectedDuration, currentBurner.getTemperature(), currentBurner.getBurnerState());
-        Programming programming = new Programming(currentBurner, programmingDetails);
+
+        Programming programming = null;
+        //Programming programming = new Programming(currentBurner, programmingDetails);
 
         int scheduleResponse = scheduleBurner(programming);
 

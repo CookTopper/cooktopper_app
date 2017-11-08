@@ -65,13 +65,8 @@ public class OptionsActivity extends AppCompatActivity implements
 
     private void changeBurnerTemperature(int temperatureId) {
         Temperature temperature = getTemperatureFromSpinner(temperatureId);
-        if(temperature == null){
-            Toast.makeText(this, "Por favor, selecione a temperatura a qual a boca " +
-                            "deve ser ligada", Toast.LENGTH_LONG).show();
-        }
-        else {
-            temperatureFromSchedule = temperature;
-        }
+        temperatureFromSchedule = temperature;
+
     }
 
     private Temperature getTemperatureFromSpinner(int temperatureId) {
@@ -153,7 +148,11 @@ public class OptionsActivity extends AppCompatActivity implements
             }
         }
         else if (!isScheduleToTurnOffEmpty() && isScheduleToTurnOnEmpty()){
-            //agendar desligamento
+            changeBurnerState(OFF);
+
+            TextView hourOffTextView = findViewById(R.id.hour_to_turn_off_text_view);
+            String hourOff = hourOffTextView.getText().toString();
+            scheduleBurnerOnOrOff(hourOff);
         }
         else {
                 if(hourTextViewOn.getText().length() == 0){
@@ -165,23 +164,62 @@ public class OptionsActivity extends AppCompatActivity implements
                             "ser ligada", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
                     changeBurnerState(ON);
 
                     TextView hourOnTextView = findViewById(R.id.hour_to_turn_on_text_view);
                     TextView hourOffTextView = findViewById(R.id.hour_to_turn_off_text_view);
-                    String[] timeOn = hourOnTextView.getText().toString().split(":");
-                    String[] timeOff = hourOffTextView.getText().toString().split(":");
-                    burnerPresenter.scheduleBurnerOnAndOff(currentBurner,
-                            Integer.parseInt(timeOn[0]),
-                            Integer.parseInt(timeOn[1]),
-                            Integer.parseInt(timeOff[0]),
-                            Integer.parseInt(timeOff[1]));
-                    Toast.makeText(getApplicationContext(), "Agendamento realizado com sucesso",
-                            Toast.LENGTH_LONG).show();
+                    String timeOn = hourOnTextView.getText().toString();
+                    String timeOff = hourOffTextView.getText().toString();
+                    scheduleBurnerOnAndOff(timeOn, timeOff);
                     finish();
                 }
         }
+    }
+
+    private void scheduleBurnerOnAndOff(String hourOn, String hourOff) {
+        BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
+        String[] timeOn = hourOn.split(":");
+        String[] timeOff = hourOff.toString().split(":");
+        burnerPresenter.scheduleBurnerOnAndOff(currentBurner,
+                Integer.parseInt(timeOn[0]),
+                Integer.parseInt(timeOn[1]),
+                Integer.parseInt(timeOff[0]),
+                Integer.parseInt(timeOff[1]));
+        Toast.makeText(getApplicationContext(), "Agendamento realizado com sucesso",
+                Toast.LENGTH_LONG).show();
+    }
+
+    private void scheduleBurnerOnOrOff(String hour) {
+        BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
+        String[] time = hour.toString().split(":");
+        burnerPresenter.scheduleBurnerOnOrOff(currentBurner,
+                Integer.parseInt(time[0]),
+                Integer.parseInt(time[1]));
+        Toast.makeText(getApplicationContext(),
+                "Agendamento realizado com sucesso", Toast.LENGTH_LONG).show();
+    }
+
+    private void confirmNoTimeToTurnOff(){
+        final TextView hourTextView = findViewById(R.id.hour_to_turn_on_text_view);
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Atenção");
+        builder.setMessage("Programar pra ligar às " + hourTextView.getText() + "h sem horário de " +
+                "desligamento?");
+        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface arg0, int arg1){
+                changeBurnerState(ON);
+                String time = hourTextView.getText().toString();
+                scheduleBurnerOnOrOff(time);
+                finish();
+            }
+        });
+        builder.setNegativeButton("Não", new DialogInterface.OnClickListener(){
+            public void onClick(DialogInterface arg0, int arg1){
+                arg0.dismiss();
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     private void changeBurnerState(int state) {
@@ -194,34 +232,6 @@ public class OptionsActivity extends AppCompatActivity implements
         }
 
         currentBurner.setBurnerState(burnerState);
-    }
-
-    private void confirmNoTimeToTurnOff(){
-        final TextView hourTextView = findViewById(R.id.hour_to_turn_on_text_view);
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Atenção");
-        builder.setMessage("Programar pra ligar às " + hourTextView.getText() + "h sem horário de " +
-                "desligamento?");
-        builder.setPositiveButton("Sim", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface arg0, int arg1){
-                BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
-                changeBurnerState(ON);
-                String[] time = hourTextView.getText().toString().split(":");
-                burnerPresenter.scheduleBurnerOnOrOff(currentBurner,
-                        Integer.parseInt(time[0]),
-                        Integer.parseInt(time[1]));
-                Toast.makeText(getApplicationContext(),
-                        "Agendamento realizado com sucesso", Toast.LENGTH_LONG).show();
-                finish();
-            }
-        });
-        builder.setNegativeButton("Não", new DialogInterface.OnClickListener(){
-            public void onClick(DialogInterface arg0, int arg1){
-                arg0.dismiss();
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
     }
 
     private void showTimePickerToTurnOn(){
