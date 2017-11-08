@@ -1,6 +1,7 @@
 package cooktopper.cooktopperapp.view;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,15 +49,20 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         @Override
         public void onClick(View v) {
             if(v == view){
-                BurnerPresenter burnerPresenter = new BurnerPresenter(context.getApplicationContext());
-
+                BurnerPresenter burnerPresenter = new BurnerPresenter(context
+                        .getApplicationContext());
+                String burnerAsJson = burnerPresenter.getBurnerAsExtrasFormatJson(dataset.get(
+                        this.getAdapterPosition()));
+                Intent intent = new Intent(context, OptionsActivity.class);
+                intent.putExtra("burner_json", burnerAsJson);
+                context.startActivity(intent);
             }
             else if(v.getId() == R.id.burner_state){
                 Burner currentBurner = dataset.get(this.getAdapterPosition());
                 int currentState = currentBurner.getBurnerState().getId();
                 final int ON = 2;
                 if(currentState == ON){
-                    turnBurnerOff(currentBurner);
+                    turnBurnerOnOrOff(currentBurner, false);
                 }
                 else {
                     Toast.makeText(context, "Selecione a temperatura", Toast.LENGTH_LONG).show();
@@ -66,8 +72,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
                     TextView temperatureLabel = view.findViewById(R.id.temperature_label);
                     temperatureLabel.setVisibility(View.VISIBLE);
 
-                    RadioGroup temperatureOptions = view.findViewById(R.id.temperature_radio_group);
-                    temperatureOptions.setVisibility(View.VISIBLE);
+                    temperatureRadioGroup.setVisibility(View.VISIBLE);
                     cleanRadioGroup = false;
                     updateList = false;
                 }
@@ -180,35 +185,30 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         }
     }
 
-    private void turnBurnerOff(Burner currentBurner){
+    private void turnBurnerOnOrOff(Burner currentBurner, boolean state){
         BurnerPresenter burnerPresenter = new BurnerPresenter(context);
-        burnerPresenter.updateBurnerState(false, currentBurner);
+        burnerPresenter.updateBurnerState(state, currentBurner);
         int time = (int) (new Date().getTime() / 1000.0);
         burnerPresenter.updateBurner(currentBurner, time);
     }
 
     private void updateBurner(Burner currentBurner, int checkedId, View view){
-        BurnerPresenter burnerPresenter = new BurnerPresenter(context);
         final int ON = 2;
+        //Update temperature
+        BurnerPresenter burnerPresenter = new BurnerPresenter(context);
+        burnerPresenter.updateBurnerTemperature(checkedId, currentBurner);
+        //If burner is on, send the new temperature to server
         if(currentBurner.getBurnerState().getId() == ON){
-            changeTemperature(currentBurner, checkedId);
+            burnerPresenter.updateBurner(currentBurner, currentBurner.getTime());
         }
+        //If burner is off, turn burner on with new temperature
         else {
-            burnerPresenter.updateBurnerState(true, currentBurner);
-            burnerPresenter.updateBurnerTemperature(checkedId, currentBurner);
-            int time = (int) (new Date().getTime() / 1000.0);
-            burnerPresenter.updateBurner(currentBurner, time);
+            turnBurnerOnOrOff(currentBurner,true);
         }
 
         TextView updatingWarning = view.findViewById(R.id.updating_warning);
         updatingWarning.setVisibility(View.GONE);
         updateList = true;
-    }
-
-    private void changeTemperature(Burner currentBurner, int checkedId){
-        BurnerPresenter burnerPresenter = new BurnerPresenter(context);
-        burnerPresenter.updateBurnerTemperature(checkedId, currentBurner);
-        burnerPresenter.updateBurner(currentBurner, currentBurner.getTime());
     }
 
     private void showOnLayout(ViewHolder holder){

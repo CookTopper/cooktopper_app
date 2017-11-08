@@ -66,11 +66,11 @@ public class OptionsActivity extends AppCompatActivity implements
     private void changeBurnerTemperature(int temperatureId) {
         Temperature temperature = getTemperatureFromSpinner(temperatureId);
         if(temperature == null){
-            Toast.makeText(this, "Por favor, selecione a temperatura a qual a boca deve ser ligada",
-                    Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Por favor, selecione a temperatura a qual a boca " +
+                            "deve ser ligada", Toast.LENGTH_LONG).show();
         }
         else {
-            BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
+            temperatureFromSchedule = temperature;
         }
     }
 
@@ -91,7 +91,6 @@ public class OptionsActivity extends AppCompatActivity implements
 
         return temperature;
     }
-
 
     private void setCurrentBurner() {
         BurnerPresenter burnerPresenter = new BurnerPresenter(getApplicationContext());
@@ -145,7 +144,7 @@ public class OptionsActivity extends AppCompatActivity implements
                 Toast.makeText(this, "Por favor, selecione a hora a qual a boca deve " +
                         "ser ligada", Toast.LENGTH_LONG).show();
             }
-            if(temperatureFromSchedule == null) {
+            else if(temperatureFromSchedule == null) {
                 Toast.makeText(this, "Por favor, selecione a temperatura a qual a boca deve " +
                         "ser ligada", Toast.LENGTH_LONG).show();
             }

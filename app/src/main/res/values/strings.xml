@@ -9,7 +9,7 @@
     <string name="qrcode_info_camera">Por favor, foque a camera no QRCode</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
-    <string name="webserver_ip">10.0.0.107:8000</string>
+    <string name="webserver_ip">10.0.0.108:8000</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
