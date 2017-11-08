@@ -49,6 +49,19 @@ Add Android Studio to your start entry:
 * Click _Tools_ > Create Desktop Entry...
 * Click [OK]
 
+#### Android SDK
+
+The project uses SDK Platform Android 5.1 - Lollipop (API 22).
+Go to > _Tools_ > _Android_ > _**SDK Manager**_
+
+Mark option Android 5.1 (Lollipop) and install it.
+
+## Running Project
+
+After dependencies installation, just click on _Run_ button, and edit strings.xml file to edit the IP of web_service
+
+To run web service checkout this repo [CookTopper Webservice](https://github.com/CookTopper/web_service)
+
 ## Built With
 
 * Android Studio 3.0 [Google Android Studio]()
@@ -61,9 +74,9 @@ Add Android Studio to your start entry:
 ## Authors
 
 * **Izabela Cristina** [izacristina](https://github.com/izacristina)
-* **Paulo Markes Calado** [ShutUpPaulo](https://github.com/izacristina)
+* **Paulo Markes Calado** [ShutUpPaulo](https://github.com/ShutUpPaulo)
 * **Pedro Ivo de Andrade** [freemanpivo](https://github.com/freemanpivo)
 
 ## License
 
-This project is licensed under the GPLv3 - see the [LICENSE.md](LICENSE.md) file for details
+This project is licensed under the GPLv3 - see the [LICENSE](LICENSE) file for details
