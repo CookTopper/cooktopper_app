@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <TextView
+        android:text="Atalho para ligar"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="12sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="Com a temperatura:"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_width="0dp"/>
+
+        <com.jaredrummler.materialspinner.MaterialSpinner
+            android:id="@+id/temperature"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="Durante:"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_width="0dp"/>
+
+        <EditText
+            android:id="@+id/duration"
+            android:inputType="number"
+            android:hint="minutos"
+            android:layout_width="0dp"
+            android:layout_weight="7"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <View
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+        <TextView
+            android:text="ou"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:textSize="12sp"/>
+
+        <View
+            android:layout_weight="4"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:background="@android:color/darker_gray"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="No horário:"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_width="0dp"/>
+
+        <Button
+            android:id="@+id/set_time_to_turn_on_button"
+            android:text="Definir Hora"
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Button" />
+
+        <TextView
+            android:id="@+id/hour_to_turn_on_text_view"
+            android:visibility="gone"
+            android:gravity="center_vertical|right"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="Até o horário (opcional):"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_width="0dp"/>
+
+        <Button
+            android:id="@+id/set_time_to_turn_off_button"
+            android:text="Definir Hora"
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Button" />
+
+        <TextView
+            android:id="@+id/hour_to_turn_off_text_view"
+            android:visibility="gone"
+            android:gravity="center_vertical|right"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:text="Clique na hora para alterá-la"
+        android:id="@+id/change_hour_hint"
+        android:visibility="gone"
+        android:gravity="center_vertical|right"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="10sp"/>
+
+    <TextView
+        android:text="Atalho para desligar"
+        android:gravity="center_vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:textSize="12sp"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray"/>
+
+    <LinearLayout
+        android:weightSum="10"
+        android:layout_margin="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:text="No horário:"
+            android:gravity="center_vertical"
+            android:layout_height="match_parent"
+            android:layout_weight="3"
+            android:layout_width="0dp"/>
+
+        <Button
+            android:id="@+id/set_time_to_turn_off_shortcut_button"
+            android:text="Definir Hora"
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.Button" />
+
+        <TextView
+            android:id="@+id/hour_to_turn_off_shortcut_text_view"
+            android:visibility="gone"
+            android:gravity="center_vertical|right"
+            android:layout_height="wrap_content"
+            android:layout_weight="7"
+            android:layout_width="0dp"
+            android:textSize="18sp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/confirm_scheduling_button"
+        android:text="Confirmar Atalho"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.Button" />
+
+</LinearLayout>
