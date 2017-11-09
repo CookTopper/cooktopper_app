@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutionException;
 import cooktopper.cooktopperapp.R;
 import cooktopper.cooktopperapp.models.BurnerState;
 import cooktopper.cooktopperapp.models.Programming;
-import cooktopper.cooktopperapp.models.ProgrammingDetails;
 import cooktopper.cooktopperapp.models.Stove;
 import cooktopper.cooktopperapp.models.Temperature;
 import cooktopper.cooktopperapp.presenter.requests.GetRequest;
@@ -87,42 +86,47 @@ public class BurnerPresenter {
 
     private int getDurationInSeconds(int hourOn ,int minuteOn, int hourOff, int minuteOff){
         int expectedDuration;
-        int scheduleHourTurnOffInMinutes = hourOff * 60 + minuteOff;
-        int scheduleHourTurnOnInMinutes = hourOn * 60 + minuteOn;
+        int scheduleHourTurnOffInMinutes = hourOff * 3600 + minuteOff * 60;
+        int scheduleHourTurnOnInMinutes = hourOn * 3600 + minuteOn * 60;
 
         if(scheduleHourTurnOffInMinutes > scheduleHourTurnOnInMinutes){
             expectedDuration = scheduleHourTurnOffInMinutes - scheduleHourTurnOnInMinutes;
         }
         else {
-            expectedDuration = 24 * 60 - scheduleHourTurnOnInMinutes + scheduleHourTurnOffInMinutes;
+            expectedDuration = 24 * 3600 - scheduleHourTurnOnInMinutes * 60 +
+                    scheduleHourTurnOffInMinutes * 60;
         }
 
-        return expectedDuration * 60;
+        return expectedDuration;
     }
 
-    private int getProgrammedTimeInSeconds(int hourOn, int minuteOn, int nowHour, int nowMinute,
-                                       int nowTimeInSeconds){
-        int sum;
-        int nowHourInMinutes = nowHour * 60 + nowMinute;
-        int scheduleHourTurnOnInMinutes = hourOn * 60 + minuteOn;
-        if(scheduleHourTurnOnInMinutes > nowHourInMinutes){
-            sum = scheduleHourTurnOnInMinutes - nowHourInMinutes;
+    private int getProgrammedTimeInSeconds(int hourOn, int minuteOn,
+                                           int nowSeconds,
+                                           int nowTimeInSeconds) {
+        int startTimeInSeconds;
+        int typedTimeInSeconds = hourOn * 3600 + minuteOn * 60;
+        int absoluteTimeInSeconds = (int) (new Date().getTime() / 1000.0);
+        if(typedTimeInSeconds > nowTimeInSeconds){
+            startTimeInSeconds = (absoluteTimeInSeconds - nowSeconds) + (typedTimeInSeconds -
+                nowTimeInSeconds);
         }
         else {
-            sum = 24 * 60 - nowHourInMinutes + scheduleHourTurnOnInMinutes;
+            startTimeInSeconds = (absoluteTimeInSeconds - nowSeconds) + (24 * 3600 - nowTimeInSeconds
+                    + typedTimeInSeconds);
         }
 
-        return nowTimeInSeconds + (sum * 60);
+        return startTimeInSeconds;
     }
 
-    private int scheduleBurner(Programming programming){
+    private int scheduleBurner(Programming programming, Burner currentBurner){
         PostRequest postRequest = new PostRequest();
         JSONObject jsonObject = new JSONObject();
         try{
-            jsonObject.put("burner_state", programming.getBurnerState().getId());
+            jsonObject.put("new_burner_state", programming.getBurnerState().getId());
             jsonObject.put("programmed_time", programming.getProgrammedTime());
-            jsonObject.put("expected_duration", programming.getExpectedDuration());
-            jsonObject.put("temperature", programming.getTemperature());
+            jsonObject.put("programming_id", programming.getId());
+            jsonObject.put("burner_id", currentBurner.getId());
+            jsonObject.put("new_temperature", programming.getTemperature().getId());
         }
         catch(JSONException jsonException){
             Log.d("Error", "Problem while parsing burner to JSONObject");
@@ -140,19 +144,30 @@ public class BurnerPresenter {
                                           int hourOff, int minuteOff){
         int nowHour = Calendar.HOUR_OF_DAY;
         int nowMinute = Calendar.MINUTE;
-        int nowTimeInSeconds =  (int) (new Date().getTime() / 1000.0);
+        int nowSeconds = Calendar.SECOND;
 
-        int programmedHour = getProgrammedTimeInSeconds(hourOn, minuteOn, nowHour, nowMinute,
-                nowTimeInSeconds);
+        int nowTimeInSeconds =  nowHour * 3600 + nowMinute * 60;
+
+        int programmedHour = getProgrammedTimeInSeconds(hourOn, minuteOn,
+                                                        nowSeconds,
+                                                        nowTimeInSeconds);
 
         int expectedDuration = getDurationInSeconds(hourOn, minuteOn, hourOff, minuteOff);
 
-        ProgrammingDetails programmingDetails = new ProgrammingDetails(programmedHour,
-                expectedDuration, currentBurner.getTemperature(), currentBurner.getBurnerState());
-        Programming programming = null;
-        //Programming programming = new Programming(currentBurner, programmingDetails);
+        int absoluteTimeInSeconds = (int) (new Date().getTime() / 1000.0);
+        Programming programming = new Programming(currentBurner.getBurnerState(),
+                currentBurner.getTemperature(),
+                absoluteTimeInSeconds,
+                expectedDuration,
+                programmedHour);
 
-        int scheduleResponse = scheduleBurner(programming);
+        ProgrammingPresenter programmingPresenter = new ProgrammingPresenter(context);
+        programmingPresenter.createProgramming(programming);
+
+        Programming programmingUpdated = programmingPresenter.getProgrammingByTime(
+                programming.getCreationTime());
+
+        int scheduleResponse = scheduleBurner(programmingUpdated, currentBurner);
 
         return scheduleResponse;
     }
@@ -160,20 +175,29 @@ public class BurnerPresenter {
     public int scheduleBurnerOnOrOff(Burner currentBurner, int hour, int minute){
         int nowHour = Calendar.HOUR_OF_DAY;
         int nowMinute = Calendar.MINUTE;
-        int nowTimeInSeconds =  (int) (new Date().getTime() / 1000.0);
+        int nowSeconds = Calendar.SECOND;
 
-        int programmedHour = getProgrammedTimeInSeconds(hour, minute, nowHour, nowMinute,
-                nowTimeInSeconds);
+        int nowTimeInSeconds =  nowHour * 3600 + nowMinute * 60;
 
+        int programmedHour = getProgrammedTimeInSeconds(hour, minute,
+                                                        nowSeconds,
+                                                        nowTimeInSeconds);
         int expectedDuration = -1;
 
-        ProgrammingDetails programmingDetails = new ProgrammingDetails(programmedHour,
-                expectedDuration, currentBurner.getTemperature(), currentBurner.getBurnerState());
+        int absoluteTimeInSeconds = (int) (new Date().getTime() / 1000.0);
+        Programming programming = new Programming(currentBurner.getBurnerState(),
+                currentBurner.getTemperature(),
+                absoluteTimeInSeconds,
+                expectedDuration,
+                programmedHour);
 
-        Programming programming = null;
-        //Programming programming = new Programming(currentBurner, programmingDetails);
+        ProgrammingPresenter programmingPresenter = new ProgrammingPresenter(context);
+        programmingPresenter.createProgramming(programming);
 
-        int scheduleResponse = scheduleBurner(programming);
+        Programming programmingUpdated = programmingPresenter.getProgrammingByTime(
+                programming.getCreationTime());
+
+        int scheduleResponse = scheduleBurner(programmingUpdated, currentBurner);
 
         return scheduleResponse;
     }

@@ -19,6 +19,15 @@ public class Programming {
         setProgrammedTime(programmedTime);
     }
 
+    public Programming(BurnerState burnerState, Temperature temperature, int creationTime,
+                       int expectedDuration, int programmedTime){
+        setBurnerState(burnerState);
+        setTemperature(temperature);
+        setCreationTime(creationTime);
+        setExpectedDuration(expectedDuration);
+        setProgrammedTime(programmedTime);
+    }
+
     public int getId(){
         return id;
     }
