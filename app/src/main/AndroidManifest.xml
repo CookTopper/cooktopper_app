@@ -30,6 +30,12 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".view.ShortcutActivity"
+            android:label="@string/title_activity_shortcut"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
         <activity android:name=".view.QrCodeActivity"></activity>
 
         <meta-data android:name="com.google.gms.vision.DEPENDENCIES" android:value="barcode"/>

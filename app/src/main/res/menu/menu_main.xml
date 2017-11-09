@@ -13,4 +13,9 @@
         android:title="@string/qrcode_settings"
         app:showAsAction="never"/>
 
+    <item android:id="@+id/new_shortcut"
+          android:orderInCategory="101"
+          android:title="@string/new_shortcut"
+          app:showAsAction="never"/>
+
 </menu>
