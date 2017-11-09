@@ -9,6 +9,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -142,9 +144,10 @@ public class BurnerPresenter {
 
     public int scheduleBurnerOnAndOff(Burner currentBurner, int hourOn, int minuteOn,
                                           int hourOff, int minuteOff){
-        int nowHour = Calendar.HOUR_OF_DAY;
-        int nowMinute = Calendar.MINUTE;
-        int nowSeconds = Calendar.SECOND;
+        Calendar now = Calendar.getInstance();
+        int nowHour = now.get(Calendar.HOUR_OF_DAY);
+        int nowMinute = now.get(Calendar.MINUTE);
+        int nowSeconds = now.get(Calendar.SECOND);
 
         int nowTimeInSeconds =  nowHour * 3600 + nowMinute * 60;
 
@@ -167,15 +170,23 @@ public class BurnerPresenter {
         Programming programmingUpdated = programmingPresenter.getProgrammingByTime(
                 programming.getCreationTime());
 
-        int scheduleResponse = scheduleBurner(programmingUpdated, currentBurner);
+        //Schedule burner to turn on
+        scheduleBurner(programmingUpdated, currentBurner);
 
-        return scheduleResponse;
+        //Schedule burner to turn off
+        programmingUpdated.setProgrammedTime(programmedHour + expectedDuration);
+        BurnerState burnerState = new BurnerState(1, "Desligada");
+        programmingUpdated.setBurnerState(burnerState);
+        int scheduleResponseOff = scheduleBurner(programmingUpdated, currentBurner);
+
+        return scheduleResponseOff;
     }
 
     public int scheduleBurnerOnOrOff(Burner currentBurner, int hour, int minute){
-        int nowHour = Calendar.HOUR_OF_DAY;
-        int nowMinute = Calendar.MINUTE;
-        int nowSeconds = Calendar.SECOND;
+        Calendar now = Calendar.getInstance();
+        int nowHour = now.get(Calendar.HOUR_OF_DAY);
+        int nowMinute = now.get(Calendar.MINUTE);
+        int nowSeconds = now.get(Calendar.SECOND);
 
         int nowTimeInSeconds =  nowHour * 3600 + nowMinute * 60;
 
