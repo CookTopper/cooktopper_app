@@ -67,12 +67,13 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
                 else {
                     Toast.makeText(context, "Selecione a temperatura", Toast.LENGTH_LONG).show();
                     cleanRadioGroup = true;
-                    temperatureRadioGroup.clearCheck();
+                    RadioGroup temperatureOptions = view.findViewById(R.id.temperature_radio_group);
+                    temperatureOptions.clearCheck();
 
                     TextView temperatureLabel = view.findViewById(R.id.temperature_label);
                     temperatureLabel.setVisibility(View.VISIBLE);
 
-                    temperatureRadioGroup.setVisibility(View.VISIBLE);
+                    temperatureOptions.setVisibility(View.VISIBLE);
                     cleanRadioGroup = false;
                     updateList = false;
                 }
