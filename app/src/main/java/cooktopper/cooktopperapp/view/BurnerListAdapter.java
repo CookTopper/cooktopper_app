@@ -200,7 +200,8 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
         burnerPresenter.updateBurnerTemperature(checkedId, currentBurner);
         //If burner is on, send the new temperature to server
         if(currentBurner.getBurnerState().getId() == ON){
-            burnerPresenter.updateBurner(currentBurner, currentBurner.getTime());
+            int time = (int) (new Date().getTime() / 1000.0);
+            burnerPresenter.updateBurner(currentBurner, time);
         }
         //If burner is off, turn burner on with new temperature
         else {
