@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity{
                     SmokeSensorPresenter smokeSensorPresenter = new SmokeSensorPresenter
                             (getApplicationContext());
                     final int smokeSensorLevel = smokeSensorPresenter.getSmokeSensor();
-                    final int MAXIMUM_LEVEL = 700;
+                    final int MAXIMUM_LEVEL = 200;
 
                     runOnUiThread(new Runnable(){
                         public void run(){
@@ -93,8 +93,6 @@ public class MainActivity extends AppCompatActivity{
         int options_id = item.getItemId();
 
         switch (options_id){
-            case R.id.action_settings:
-                return true;
             case R.id.qrcode:
                 Intent launchchQrCodeReaderActivity = new Intent(MainActivity.this,
                         QrCodeActivity.class);

@@ -51,10 +51,10 @@ public class BurnerPresenter {
         final int BAIXA = 0, MEDIA = 1, ALTA = 2;
         switch(temperatureId){
             case BAIXA:
-                temperature = new Temperature(12, "baixa");
+                temperature = new Temperature(5, "baixa");
                 break;
             case MEDIA:
-                temperature = new Temperature(11, "media");
+                temperature = new Temperature(2, "media");
                 break;
             case ALTA:
                 temperature = new Temperature(1, "alta");
@@ -240,6 +240,7 @@ public class BurnerPresenter {
 
         JSONArray jsonArray = null;
         List<Burner> burners = new ArrayList<>();
+        List<Burner> finalBurners = null;
         try{
             jsonArray = new JSONArray(response);
             for(int i=0; i<jsonArray.length(); i++){
@@ -261,15 +262,24 @@ public class BurnerPresenter {
                         temperature,
                         burnerState,
                         jsonArray.getJSONObject(i).getInt("time"));
-
                 burners.add(burner);
+            }
+
+            finalBurners = new ArrayList<>();
+            if(burners.get(0).getDescription().equals("1")){
+                finalBurners.add(burners.get(0));
+                finalBurners.add(burners.get(1));
+            }
+            else {
+                finalBurners.add(burners.get(1));
+                finalBurners.add(burners.get(0));
             }
 
         } catch(JSONException e){
             e.printStackTrace();
         }
 
-        return burners;
+        return finalBurners;
     }
 
     public Burner getBurnerFromExtrasFormatJson(String json){

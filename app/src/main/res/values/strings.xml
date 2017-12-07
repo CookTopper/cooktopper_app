@@ -5,13 +5,13 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_main">Cooktopper</string>
     <string name="action_settings">Settings</string>
-    <string name="qrcode_settings">QRCode - Sync</string>
+    <string name="qrcode_settings">QR Code</string>
     <string name="qrcode_info_camera">Por favor, foque a camera no QRCode</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="new_shortcut">Novo Atalho</string>
     <string name="title_activity_shortcut">Novo Atalho</string>
 
-    <string name="webserver_ip">192.168.10.138:8000</string>
+    <string name="webserver_ip">fogaopi2.herokuapp.com</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -33,8 +33,6 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter{
         switch(position){
             case 0:
                 return "BOCAS";
-            case 1:
-                return "ATALHOS";
         }
         return null;
     }

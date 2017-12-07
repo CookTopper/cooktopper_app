@@ -169,7 +169,7 @@ public class BurnerListAdapter extends RecyclerView.Adapter<BurnerListAdapter.Vi
     }
 
     private void setInitialTemperature(int temperatureId, ViewHolder holder){
-        final int BAIXA = 12, MEDIA = 11, ALTA = 1;
+        final int BAIXA = 5, MEDIA = 2, ALTA = 1;
         switch(temperatureId){
             case BAIXA:
                 RadioButton lowOption = holder.view.findViewById(R.id.low_temperature);

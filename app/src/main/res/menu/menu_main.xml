@@ -3,11 +3,6 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="cooktopper.cooktopperapp.view.MainActivity">
 
-    <item android:id="@+id/action_settings"
-          android:orderInCategory="100"
-          android:title="@string/action_settings"
-          app:showAsAction="never"/>
-
     <item android:id="@+id/qrcode"
         android:orderInCategory="101"
         android:title="@string/qrcode_settings"

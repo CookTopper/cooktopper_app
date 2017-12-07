@@ -74,10 +74,10 @@ public class OptionsActivity extends AppCompatActivity implements
         Temperature temperature = null;
         switch(temperatureId){
             case BAIXA:
-                temperature = new Temperature(12, "baixa");
+                temperature = new Temperature(5, "baixa");
                 break;
             case MEDIA:
-                temperature = new Temperature(11, "media");
+                temperature = new Temperature(2, "media");
                 break;
             case ALTA:
                 temperature = new Temperature(1, "alta");
